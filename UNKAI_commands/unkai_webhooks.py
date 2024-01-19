@@ -8,7 +8,7 @@ from discord import app_commands
 from nacl import *
 import aiohttp
 
-async def wbk(ctx : commands.Context, nom : str, * , msg : str):
+async def wbk(ctx : commands.Context, nom : str, msg : str):
     async with aiohttp.ClientSession() as session:
         wbk_list = await ctx.guild.webhooks()
         found = False
