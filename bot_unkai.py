@@ -106,7 +106,7 @@ class button_view(discord.ui.View):
 # HELP - last update = v2
 
 @bot.command(name = 'help')
-async def help(ctx, catégorie : str = 'all'):
+async def help(ctx : commands.Context, catégorie : str = 'all'):
     if catégorie.lower() == 'meteo':
         await unkai_help.help(ctx, 'meteo')
 
@@ -128,12 +128,12 @@ async def slash_help(interaction : discord.Interaction, catégorie : app_command
 # PING - last update = v2
 
 @bot.command(name = 'ping')
-async def ping(ctx): # mesure du ping (fonctionnel)
+async def ping(ctx : commands.Context): # mesure du ping (fonctionnel)
     print(round(bot.latency * 1000), "ms")
     await ctx.send(f'> *{round(bot.latency * 1000)} ms* \n> ||*...pong*||')
 
 @bot.command(name = 'ms')
-async def ms(ctx): # mesure du ping (fonctionnel)
+async def ms(ctx : commands.Context): # mesure du ping (fonctionnel)
     print(round(bot.latency * 1000), "ms")
     await ctx.send(f'> *{round(bot.latency * 1000)} ms*')
 
@@ -154,11 +154,11 @@ async def infos(interaction : discord.Interaction): # About Unkai (non fonctionn
     await interaction.response.send_message(embed = info_embed)
 
 @bot.command(name = 'link')
-async def link(ctx, site : str):
+async def link(ctx : commands.Context, site : str):
     await unkai_invites.link(ctx, site)
 
 @bot.command(name = 'invite')
-async def invitations(ctx, site : str):
+async def invitations(ctx : commands.Context, site : str):
     await unkai_invites.link(ctx, site)
 
 @bot.tree.command(name = 'link')
@@ -180,7 +180,7 @@ async def slash_invitations(interaction : discord.Interaction, serveur : app_com
 # CLEAR - last update = v2
 
 @bot.command(name = 'clear') 
-async def clear(ctx, nombre : int = 1):
+async def clear(ctx : commands.Context, nombre : int = 1):
     await unkai_clear.clear(ctx, nombre)
 
 @bot.tree.command(name = 'clear')
@@ -307,7 +307,7 @@ async def makai_roll(interaction : discord.Interaction, bonus : int, nombre : ap
 # NARRATION - last update = v1
 
 @bot.command(name = 'nar') 
-async def narration(ctx, * , nar): # narration (fonctionnel)
+async def narration(ctx : commands.Context, * , nar): # narration (fonctionnel)
     if len(nar) < 100:
         print(f'Envois du message : {nar}')
 
@@ -319,7 +319,7 @@ async def narration(ctx, * , nar): # narration (fonctionnel)
     await ctx.send(nar)
 
 @bot.command(name = 'e-nar')
-async def embed_narration(ctx, titre,  * , nar): # embed narration (fonctionnel)
+async def embed_narration(ctx : commands.Context, titre,  * , nar): # embed narration (fonctionnel)
     if len(nar) < 100:
         print(f'Envois du message : {nar} (embed)')
 
@@ -334,7 +334,7 @@ async def embed_narration(ctx, titre,  * , nar): # embed narration (fonctionnel)
 # JOKES - last update = v2
     
 @bot.command(name = 'joke')
-async def blague(ctx):
+async def blague(ctx : commands.Context):
     await unkai_jokes.joke(ctx)
 
 @bot.tree.command(name = 'joke')
@@ -346,7 +346,7 @@ async def slash_blague(interaction : discord.Interaction): # blagues (fonctionne
 
 @bot.command(name = 'meteo')
 @has_permissions(administrator = True)
-async def meteo(ctx, nom : str, climat : int, saison : int, durée : int, last_temp : float = None) : # météo avec températures (fonctionnel)
+async def meteo(ctx : commands.Context, nom : str, climat : int, saison : int, durée : int, last_temp : float = None) : # météo avec températures (fonctionnel)
     await unkai_meteo.meteo(ctx, nom, climat, saison, durée, last_temp)
 
 @bot.tree.command(name = 'meteo')
@@ -359,12 +359,12 @@ async def slash_meteo(interaction : discord.Interaction, nom : str, climat : int
 
 @bot.command(name = 'kick')
 @has_permissions(kick_members = True)
-async def kick(ctx, member : discord.Member, * , reason = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
+async def kick(ctx : commands.Context, member : discord.Member, * , reason = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
     await unkai_mod.kick(ctx, member, reason, 1)
 
 @bot.command(name = 'ban')
 @has_permissions(ban_members = True)
-async def ban(ctx, member : discord.Member, * , reason = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
+async def ban(ctx : commands.Context, member : discord.Member, * , reason = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
     await unkai_mod.kick(ctx, member, reason, 2)
 
 @bot.tree.command(name = 'kick')
@@ -401,12 +401,12 @@ async def kick_role(ctx, role : discord.Role, * , reason = 'aucune raison spéci
     
 @bot.command(name = 'lock')
 @has_permissions(administrator = True)
-async def lock(ctx) : # Activation anti-raid (fonctionnel)
+async def lock(ctx : commands.Context) : # Activation anti-raid (fonctionnel)
     await unkai_lock.lock(ctx, serveurs)
 
 @bot.command(name = 'unlock')
 @has_permissions(administrator = True)
-async def unlock(ctx) : # Désactivation anti-raid (fonctionnel)
+async def unlock(ctx : commands.Context) : # Désactivation anti-raid (fonctionnel)
     await unkai_lock.unlock(ctx, serveurs)
 
 @bot.tree.command(name = 'lock')
@@ -424,7 +424,7 @@ async def unlock(interaction) : # Désactivation anti-raid (fonctionnel)
 
 @bot.command(name = 'spam')
 @has_permissions(administrator = True)
-async def spam(ctx, arg1, arg2 : int): # Spam un message donné (fonctionnel)
+async def spam(ctx : commands.Context, arg1, arg2 : int): # Spam un message donné (fonctionnel)
     for i in range(arg2):
         await ctx.send(f'{arg1}') 
 
@@ -520,7 +520,7 @@ async def on_member_remove(member) : # adieu (fonctionnel)
 
 
 @bot.command(name = 'play')
-async def play(ctx, * , arg) : # joue la musique demandée dans un salon vocal (non fonctionnel)
+async def play(ctx : commands.Context, * , arg) : # joue la musique demandée dans un salon vocal (non fonctionnel)
     channel = ctx.message.author.voice.channel
     await channel.connect()
 
@@ -531,7 +531,7 @@ async def play(ctx, * , arg) : # joue la musique demandée dans un salon vocal (
         await ctx.send(f'Nom invalide')
 
 @bot.command(name = 'katsu_roll')
-async def katsu_roll(ctx, msg):
+async def katsu_roll(ctx : commands.Context, msg):
     roll = r.Katsu_roll(msg)
     if type(roll) is list:
         cmd = ''
@@ -560,7 +560,7 @@ async def katsu_roll(ctx, msg):
 
 @bot.command(name = 'reset_role')
 @has_permissions(administrator = True)
-async def kick_role(ctx, role : discord.Role, * , reason = 'aucune raison spécifiée'): # reset les rôles de tout les membres possédant le rôle demandé (non fonctionnel)
+async def kick_role(ctx : commands.Context, role : discord.Role, * , reason = 'aucune raison spécifiée'): # reset les rôles de tout les membres possédant le rôle demandé (non fonctionnel)
     namekick = f'Les rôles des membres possédant le rôle "{role}" ont été réinitialisés'
     reasonkick = f'**Raison :** {reason}'
 
@@ -577,12 +577,55 @@ async def kick_role(ctx, role : discord.Role, * , reason = 'aucune raison spéci
 
 @bot.command(name = 'give_all')
 @has_permissions(administrator = True)
-async def give_role(ctx, role : discord.Role):
+async def give_role(ctx : commands.Context, role : discord.Role):
     for membre in ctx.guild.members:
         if role not in membre.roles:
             await membre.add_roles(role)
 
     await ctx.send(f'Le rôle {role} a été ajouté à tout les membres avec succès !')
+
+@bot.command(name = "wbk")
+async def wbk(ctx : commands.Context, nom : str, * , msg : str):
+    async with aiohttp.ClientSession() as session:
+        wbk_list = await ctx.guild.webhooks()
+        found = False
+
+        for wbk in wbk_list:
+            if nom.lower() == wbk.name.lower():
+                webhook = Webhook.from_url(wbk.url, session = session)
+                await webhook.send(msg, avatar_url = "https://cdn.discordapp.com/attachments/1155450092329906238/1197196427508588575/9da2bf5e-1630-4586-a1e0-8422eb51c3e8.png?ex=65ba630f&is=65a7ee0f&hm=9a8f24db2fbe28cb3ed6897fcb897eeaf5ab5bee3e6663dfb3f96f2883a71c3b&")
+                found = True
+
+        if not found:
+            await ctx.send(f"Webhook inconnu, essayez \"U!wbk_create\"")
+
+@bot.command(name = "wbk_create")
+async def create_wbk(ctx : commands.Context, nom : str):
+    wbk_list = await ctx.guild.webhooks()
+    found = False
+
+    for wbk in wbk_list:
+        if nom.lower() == wbk.name.lower():
+            await ctx.send(f"Le webhook \"{nom}\" est déjà présent sur ce serveur")
+            found = True
+
+    if not found:
+        await discord.StageChannel.create_webhook(self = ctx.channel, name = nom)
+        await ctx.send(f"Un webhook du nom de \"{nom}\" a été créé")
+
+@bot.command(name = "wbk_del")
+async def del_wbk(ctx : commands.Context, nom : str):
+    wbk_list = await ctx.guild.webhooks()
+    found = False
+
+    for wbk in wbk_list:
+        if nom.lower() == wbk.name.lower():
+            await wbk.delete()
+            await ctx.send(f"Le webhook \"{nom}\" a été supprimé")
+            found = True
+
+    if not found:
+        await ctx.send(f"Webhook inconnu, suppression impossible")
 
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
