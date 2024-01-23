@@ -2,7 +2,7 @@
 
 ## USERS -
 
-user_is_register - [![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) `Uid`]  
+user_is_register - [Uid]  
 add_user - [username][Uid]  
 
 ## GUILDS -
@@ -22,3 +22,11 @@ remove_webhook - [Wid]
 is_register - [Wid][Gid]  
 set_registration - [Wid][Gid]  
 unset_registration - [Wid][Gid]  
+
+```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+```
