@@ -3,8 +3,8 @@
 ## USERS -
 
 **ID** - integer  
-**username** - varchar, discord username  
-**Uid** - varchar, "Uid[discord id]"  
+**username** - varchar - discord username  
+**Uid** - varchar - "Uid[discord id]"  
   
 **user_is_register** - [Uid]  
 **add_user** - [username][Uid]  
