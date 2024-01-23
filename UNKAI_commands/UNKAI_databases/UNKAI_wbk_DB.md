@@ -2,6 +2,13 @@
 
 ## USERS -
 
+**ID** - PRIMARY KEY  
+> Integer  
+**username**  
+> Varchar - discord username  
+**Uid**  
+> Varchar - "Uid[discord id]"  
+  
 **user_is_register** - [Uid]  
 **add_user** - [username][Uid]  
 
@@ -15,9 +22,6 @@
 **webhook_is_register** - [wbkname][Uid]  
 **webhook_is_register_by_id** - [Wid]  
 **add_webhook** - [wbkname][tag][Uid][username] [avatar_url]  
-
-> [!NOTE]
-> The "avatar_url" is only an option  
 
 **remove_webhook** - [Wid]  
 
