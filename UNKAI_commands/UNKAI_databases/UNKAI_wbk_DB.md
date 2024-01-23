@@ -15,6 +15,10 @@
 **webhook_is_register** - [wbkname][Uid]  
 **webhook_is_register_by_id** - [Wid]  
 **add_webhook** - [wbkname][tag][Uid][username] [avatar_url]  
+
+> [!NOTE]
+> The "avatar_url" is only an option  
+
 **remove_webhook** - [Wid]  
 
 ## REGISTRATIONS -
