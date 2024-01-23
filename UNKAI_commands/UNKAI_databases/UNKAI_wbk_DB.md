@@ -14,7 +14,7 @@ add_guild - [guildname][Gid]
 
 webhook_is_register - [wbkname][Uid]  
 webhook_is_register_by_id - [Wid]  
-add_webhook - [wbkname][tag][Uid][username] [avatar_url]  
+add_webhook - [wbkname][tag][Uid][username] ```diff # [avatar_url]```  
 remove_webhook - [Wid]  
 
 ## REGISTRATIONS -
