@@ -11,7 +11,7 @@
 
 ## GUILDS -
 
-**ID** - integer  
+**ID** - *integer*  
 **guildname** - *varchar* - discord guildname  
 **Gid** - *varchar* - "Gid[discord id]"  
   
