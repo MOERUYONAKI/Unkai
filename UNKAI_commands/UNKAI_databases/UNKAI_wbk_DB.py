@@ -67,15 +67,19 @@ class Webhooks():
     # - WEBHOOKS
         
     def webhook_is_register(self, name : str, owner_id : int): # Vérifie si un webhook est enregistré par son nom et son propriétaire
-        Uid = f'Uid{owner_id}'
+        if not self.user_is_register(owner_id):
+            return False
+        
+        else:
+            Uid = f'Uid{owner_id}'
 
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
-        crs = database.cursor()
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
 
-        crs.execute(f'SELECT * FROM webhooks WHERE owner_ID = "{Uid}" and name = "{name}";')
-        database.close()
+            crs.execute(f'SELECT * FROM webhooks WHERE owner_ID = "{Uid}" and name = "{name}";')
+            database.close()
 
-        return True if len(crs.fetchall()) > 0 else False
+            return True if len(crs.fetchall()) > 0 else False
     
     def webhook_is_register_by_id(self, WBKid): # Vérifie si un webhook est enregistré par son ID
         database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
@@ -105,7 +109,7 @@ class Webhooks():
             return True
         
     def remove_webhook(self, id : int): # Supprime un webhook s'il existe dans la base
-        if self.webhook_is_register_by_id(id):
+        if not self.webhook_is_register_by_id(id):
             return False
 
         else:
@@ -113,6 +117,21 @@ class Webhooks():
             crs = database.cursor()
 
             crs.execute(f'DELETE FROM webhooks WHERE ID = "{id}";')
+            database.close()
+
+            return True
+        
+    def edit_webhook_tag(self, newtag : str, name : str, owner_id : int):
+        if not self.webhook_is_register(name, owner_id):
+            return False
+
+        else:
+            Uid = f'Uid{owner_id}'
+
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE webhooks SET `tag` = "{newtag}" WHERE name = "{name}" AND owner_ID = "{Uid}";')
             database.close()
 
             return True
@@ -179,6 +198,7 @@ test = Webhooks()
 #? webhook_is_register_by_id - validé
 #? add_webhook - validé 
 #? remove_webhook - validé 
+#? edit_webhook_tag - validé
 
 # - Registrations 
 #? is_register - validé
