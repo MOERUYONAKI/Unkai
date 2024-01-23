@@ -2,11 +2,9 @@
 
 ## USERS -
 
-**ID** - integer ( *PRIMARY KEY* )  
-
-**username** - Varchar ( discord username )  
-
-**Uid** - Varchar ( "Uid[discord id]" )  
+**ID** - integer  
+**username** - varchar, discord username  
+**Uid** - varchar, "Uid[discord id]"  
   
 **user_is_register** - [Uid]  
 **add_user** - [username][Uid]  
