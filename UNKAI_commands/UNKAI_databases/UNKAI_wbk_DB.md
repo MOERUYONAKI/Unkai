@@ -2,28 +2,43 @@
 
 ## USERS -
 
-**ID** - integer  
-**username** - varchar - discord username  
-**Uid** - varchar - "Uid[discord id]"  
+**ID** - *integer*  
+**username** - *varchar* - discord username  
+**Uid** - *varchar* - "Uid[discord id]"  
   
 **user_is_register** - [Uid]  
 **add_user** - [username][Uid]  
 
 ## GUILDS -
 
+**ID** - integer  
+**guildname** - *varchar* - discord guildname  
+**Gid** - *varchar* - "Gid[discord id]"  
+  
 **guild_is_register** - [Gid]  
 **add_guild** - [guildname][Gid]  
 
 ## WEBHOOKS -
 
+**ID** - *integer*  
+**name** - *varchar* - webhook name  
+**tag** - *varchar* - webhook tag  
+**date** - *date* - creation date  
+**Uid** - *varchar* - "Uid[discord id]"  
+**avatar** - *varchar* - image url  
+  
 **webhook_is_register** - [wbkname][Uid]  
 **webhook_is_register_by_id** - [Wid]  
-**add_webhook** - [wbkname][tag][Uid][username] [avatar_url]  
-
+**add_webhook** - [wbkname][tag][Uid][username] [avatar]  
 **remove_webhook** - [Wid]  
 
 ## REGISTRATIONS -
 
+**ID** - *integer*  
+**date** - *date* - registration date  
+**Gid** - *varchar* - "Gid[discord id]"  
+**Wid** - *integer* - webhook id  
+  
 **is_register** - [Wid][Gid]  
 **set_registration** - [Wid][Gid]  
 **unset_registration** - [Wid][Gid]  
