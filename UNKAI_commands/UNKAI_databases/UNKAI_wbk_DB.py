@@ -124,6 +124,21 @@ class Webhooks():
 
     # - WEBHOOKS EDITS
      
+    def edit_webhook_name(self, newname : str, name : str, owner_id : int):
+        if not self.webhook_is_register(name, owner_id):
+            return False
+
+        else:
+            Uid = f'Uid{owner_id}'
+
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE webhooks SET `name` = "{newname}" WHERE name = "{name}" AND owner_ID = "{Uid}";')
+            database.close()
+
+            return True
+    
     def edit_webhook_tag(self, newtag : str, name : str, owner_id : int):
         if not self.webhook_is_register(name, owner_id):
             return False
@@ -218,6 +233,7 @@ test = Webhooks()
 #? remove_webhook - validé 
 
 # Webhooks edits
+#? edit_webhook_name - validé
 #? edit_webhook_tag - validé
 #? edit_webhook_avatar - validé
 

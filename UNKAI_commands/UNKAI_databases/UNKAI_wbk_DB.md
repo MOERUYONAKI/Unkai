@@ -32,6 +32,7 @@
 **add_webhook** - [wbkname][tag][Uid][username] [avatar]  
 **remove_webhook** - [Wid]  
   
+**edit_webhook_name** - [newname][wbkname][Uid]  
 **edit_webhook_tag** - [newtag][wbkname][Uid]  
 **edit_webhook_avatar** - [avatar][wbkname][Uid]  
 
