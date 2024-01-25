@@ -8,6 +8,7 @@
   
 **user_is_register** - [Uid]  
 **add_user** - [username][Uid]  
+**get_id_by_Uid** - [Uid]  
 
 ## GUILDS -
 
