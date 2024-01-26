@@ -450,6 +450,8 @@ async def on_ready() :
 @bot.event
 async def on_message(message) : # réaction aux messages (fonctionnel)
     await bot.process_commands(message)
+    await unkai_webhooks.check_message(message) # - Webhooks
+
     list_words = ['hey', 'yo', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 're', 'wesh', 'wsh', 'salam']
 
     if message.content.lower() in list_words:
@@ -590,7 +592,7 @@ async def wbk(ctx : commands.Context, nom : str, * , msg : str):
 
 @bot.command(name = "wbk_create")
 async def create_wbk(ctx : commands.Context, nom : str):
-    await unkai_webhooks.create_wbk(ctx, nom)
+    await unkai_webhooks.register(ctx, nom, tag)
 
 @bot.command(name = "wbk_del")
 async def del_wbk(ctx : commands.Context, nom : str):
