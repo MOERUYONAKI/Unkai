@@ -76,6 +76,23 @@ def check_validity(string : str): # True si valide, False sinon
     return True if word != [] else False
 
 
+async def check_message(message : discord.Message): # manque l'enregistrement automatique du webhook dans la guild 
+    async with aiohttp.ClientSession() as session:
+        WBK_list = WBK.get_webhooks_list(message.author.id) if WBK.get_webhooks_list(message.author.id) != False else []
+        
+        for i in range(len(WBK_list)):
+            tag = f'{WBK_list[i][2]}/'
+            if message.content[0 : len(tag)] == tag:
+                await message.channel.send(f'Tag détecté - **{tag[0 : -1]}**')
+
+                guild_WBK_list = await message.guild.webhooks()
+                WBK_names = [elt.name for elt in guild_WBK_list]
+
+                if f'{WBK_list[i][1]}_{WBK_list[i][0]}' in WBK_names:
+                    webhook = Webhook.from_url(guild_WBK_list[WBK_names.index(f'{WBK_list[i][1]}_{WBK_list[i][0]}')].url, session = session)
+                    await webhook.send(message.content[len(tag) :], username = WBK_list[i][1]) # avatar_url = WBK_list[i][2] if WBK_list[i][2] != 'NULL' else None) - marche pas
+
+
 # base command
 
 async def register(ctx : commands.Context, name : str, tag : str, avatar_url : str = None):
@@ -87,9 +104,9 @@ async def register(ctx : commands.Context, name : str, tag : str, avatar_url : s
 
         if not result:
             await ctx.send(f'Une erreur est survenue, veuillez réessayer')
-            return False
 
-        await ctx.send(f'Le webhook "{name}" a bien été enregistré')
+        else:
+            await ctx.send(f'Le webhook "**{name}**" a bien été enregistré')
 
 
 # slash command

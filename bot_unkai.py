@@ -9,6 +9,7 @@ import discord
 import ffmpeg
 import asyncio
 import numpy
+import aiohttp
 from discord import FFmpegPCMAudio
 from discord.ext import commands
 from discord.ext.commands.bot import Bot
@@ -20,7 +21,7 @@ from nacl import *
 import ffmpeg.audio
 from random import randint
 from time import *
-import Autres.rolls as r
+import rolls as r
 
 
 # - UNKAI commands
@@ -32,6 +33,7 @@ import UNKAI_commands.unkai_jokes as unkai_jokes
 import UNKAI_commands.unkai_meteo as unkai_meteo
 import UNKAI_commands.unkai_mod as unkai_mod
 import UNKAI_commands.unkai_lock as unkai_lock
+import UNKAI_commands.unkai_webhooks as unkai_webhooks
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -77,21 +79,21 @@ class button_view(discord.ui.View):
         
     @discord.ui.button(label = "Check", style = discord.ButtonStyle.green, custom_id = "verify")
     async def check(self, interaction : discord.Interaction, button : discord.ui.Button):
-        role_verify = interaction.guild.get_role(1062755058640506950)
-        role_non_verify = interaction.guild.get_role(1062754745086918777)
+        role_verify = interaction.guild.get_role(1198947527710478366)
+        role_non_verify = interaction.guild.get_role(1198947456302456892)
             
         if role_verify not in interaction.user.roles and role_non_verify in interaction.user.roles:
             await interaction.user.remove_roles(role_non_verify)
             await interaction.user.add_roles(role_verify)
-            await interaction.response.send_message(embed = discord.Embed(title = "Check d'entrée", description = "Votre entrée a été confirmée, bienvenue sur Izaria ! 👋", color = 0x74FF33), ephemeral = True)
+            await interaction.response.send_message(embed = discord.Embed(title = "Check d'entrée", description = "Votre entrée a été confirmée, bienvenue sur le serveur ! 👋", color = 0x74FF33), ephemeral = True)
             
         else:
             await interaction.response.send_message("Ce check ne vous concerne pas...", ephemeral = True)
             
     @discord.ui.button(label = "Leave", style = discord.ButtonStyle.danger, custom_id = "leave")
     async def leave(self, interaction : discord.Interaction, button : discord.ui.Button):
-        role_verify = interaction.guild.get_role(1062755058640506950)
-        role_non_verify = interaction.guild.get_role(1062754745086918777)
+        role_verify = interaction.guild.get_role(1198947527710478366)
+        role_non_verify = interaction.guild.get_role(1198947456302456892)
         
         if role_verify not in interaction.user.roles and role_non_verify in interaction.user.roles:
             await interaction.user.kick()
@@ -450,7 +452,9 @@ async def on_ready() :
 @bot.event
 async def on_message(message) : # réaction aux messages (fonctionnel)
     await bot.process_commands(message)
-    list_words = ['hey', 'yo', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 're', 'wesh', 'wsh', 'salam']
+    await unkai_webhooks.check_message(message) # - Webhooks
+
+    list_words = ['hey', 'yo', 'yop', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 're', 'wesh', 'wsh', 'salam']
 
     if message.content.lower() in list_words:
         await message.add_reaction("👋")
@@ -495,11 +499,11 @@ async def on_member_join(member : discord.Member) : # bienvenue (fonctionnel)
     except: 
         pass
     
-    if member.guild.id == 1062304542634549318: # Vérification d'entrée
-        role = discord.utils.get(member.guild.roles, name = "| Non vérifié")
+    if member.guild.id == 1155450091398758460: # Vérification d'entrée (en test sur SDM)
+        role = discord.utils.get(member.guild.roles, name = "Unchecked")
         await member.add_roles(role)
-        loc = bot.get_channel(1062304542634549321)
-        await loc.send(embed = discord.Embed(title = "Check d'entrée", description = "Pour valider votre entrée sur le serveur, veuillez intéragir avec le bouton **Check**. Celui-ci vous donnera le rôle <@&1062755058640506950> et par la même occasion l'accès au serveur.", color = 0xFF3333), view = button_view())
+        loc = bot.get_channel(1198949752725831700)
+        await loc.send(f"> {member.mention} - Suppression dans 60 secondes", delete_after = 60, embed = discord.Embed(title = "Check d'entrée", description = "Pour valider votre entrée sur le serveur, veuillez intéragir avec le bouton **Check**. Celui-ci vous donnera le rôle <@&1198947527710478366> et par la même occasion l'accès au serveur.", color = 0xFF3333), view = button_view())
 
     for serveur in serveurs: # Anti-raid (fonctionnel)
         if member.guild.id == serveur.id and serveur.status == 'lock':
@@ -582,19 +586,22 @@ async def give_role(ctx : commands.Context, role : discord.Role):
         if role not in membre.roles:
             await membre.add_roles(role)
 
-    await ctx.send(f'Le rôle {role} a été ajouté à tout les membres avec succès !')
+    await ctx.send(f'Le rôle **{role}** a été ajouté à tout les membres avec succès !')
 
-@bot.command(name = "wbk")
-async def wbk(ctx : commands.Context, nom : str, * , msg : str):
-    await unkai_webhooks.wbk(ctx, nom, msg)
+
+# - Webhooks
+
+# @bot.command(name = "wbk")
+# async def wbk(ctx : commands.Context, nom : str, * , msg : str):
+#     await unkai_webhooks.wbk(ctx, nom, msg)
 
 @bot.command(name = "wbk_create")
-async def create_wbk(ctx : commands.Context, nom : str):
-    await unkai_webhooks.create_wbk(ctx, nom)
+async def create_wbk(ctx : commands.Context, nom : str, tag : str):
+    await unkai_webhooks.register(ctx, nom, tag)
 
-@bot.command(name = "wbk_del")
-async def del_wbk(ctx : commands.Context, nom : str):
-    await unkai_webhooks.del_wbk(ctx, nom)
+# @bot.command(name = "wbk_del")
+# async def del_wbk(ctx : commands.Context, nom : str):
+#     await unkai_webhooks.del_wbk(ctx, nom)
 
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
@@ -610,4 +617,4 @@ bot.run(TOKEN)
 # > Actual version - 2 
 # > Uid - 1
 # > Creation - 2021/07 
-# > Total scripts - 10 
+# > Total scripts - 11 
