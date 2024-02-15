@@ -10,6 +10,7 @@ import ffmpeg
 import asyncio
 import numpy
 import aiohttp
+import os
 from discord import FFmpegPCMAudio
 from discord.ext import commands
 from discord.ext.commands.bot import Bot
@@ -371,12 +372,12 @@ async def ban(ctx : commands.Context, member : discord.Member, * , reason = 'auc
 
 @bot.tree.command(name = 'kick')
 @has_permissions(kick_members = True)
-async def slash_kick(interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
+async def slash_kick(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
     await unkai_mod.slash_kick(interaction, membre, raison, 1)
 
 @bot.tree.command(name = 'ban')
 @has_permissions(ban_members = True)
-async def slash_ban(interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
+async def slash_ban(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
     await unkai_mod.slash_kick(interaction, membre, raison, 2)
 
 @bot.command(name = 'kick_role')
@@ -591,13 +592,35 @@ async def give_role(ctx : commands.Context, role : discord.Role):
 
 # - Webhooks
 
-# @bot.command(name = "wbk")
-# async def wbk(ctx : commands.Context, nom : str, * , msg : str):
-#     await unkai_webhooks.wbk(ctx, nom, msg)
-
 @bot.command(name = "wbk_create")
-async def create_wbk(ctx : commands.Context, nom : str, tag : str):
-    await unkai_webhooks.register(ctx, nom, tag)
+async def create_wbk(ctx : commands.Context, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (fonctionnel)
+    avatar = None
+
+    if ctx.message.attachments != []:
+        await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
+
+        channel = bot.get_channel(1206621721541484607)
+        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
+        avatar = image.attachments[0].url
+
+        os.remove("bot UNKAI\\temp_file.png")
+
+    await unkai_webhooks.register(ctx, nom, tag, avatar)
+
+@bot.tree.command(name = "wbk_create")
+async def create_wbk(interaction : discord.Interaction, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (non fonctionnel)
+    avatar = None
+
+    if interaction.message.attachments != []:
+        await interaction.message.attachments[0].save("bot UNKAI\\temp_file.png")
+
+        channel = bot.get_channel(1206621721541484607)
+        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
+        avatar = image.attachments[0].url
+
+        os.remove("bot UNKAI\\temp_file.png")
+
+    await unkai_webhooks.slash_register(interaction, nom, tag, avatar)
 
 # @bot.command(name = "wbk_del")
 # async def del_wbk(ctx : commands.Context, nom : str):
