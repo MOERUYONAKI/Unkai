@@ -9,34 +9,6 @@ from nacl import *
 import aiohttp
 from .DataBases.UNKAI_wbk.UNKAI_wbk_DB import Webhooks
 
-# - Commandes tests
-''' async def wbk(ctx : commands.Context, nom : str, msg : str):
-    async with aiohttp.ClientSession() as session:
-        wbk_list = await ctx.guild.webhooks()
-        found = False
-
-        for wbk in wbk_list:
-            if nom.lower() == wbk.name.lower():
-                webhook = Webhook.from_url(wbk.url, session = session)
-                await webhook.send(msg, avatar_url = "https://cdn.discordapp.com/attachments/1155450092329906238/1197196427508588575/9da2bf5e-1630-4586-a1e0-8422eb51c3e8.png?ex=65ba630f&is=65a7ee0f&hm=9a8f24db2fbe28cb3ed6897fcb897eeaf5ab5bee3e6663dfb3f96f2883a71c3b&")
-                found = True
-
-        if not found:
-            await ctx.send(f"Webhook inconnu, essayez \"U!wbk_create\"")
-
-async def del_wbk(ctx : commands.Context, nom : str):
-    wbk_list = await ctx.guild.webhooks()
-    found = False
-
-    for wbk in wbk_list:
-        if nom.lower() == wbk.name.lower():
-            await wbk.delete()
-            await ctx.send(f"Le webhook \"{nom}\" a été supprimé")
-            found = True
-
-    if not found:
-        await ctx.send(f"Webhook inconnu, suppression impossible") ''' 
-
 intents = discord.Intents.all()
 intents.members = True
 
@@ -88,7 +60,7 @@ async def register(ctx : commands.Context, name : str, tag : str, avatar_url : s
         await ctx.send(f'Le nom et/ou le tag ne sont pas valide, opération impossible')
 
     else:
-        avatar_url = 'https://cdn.discordapp.com/attachments/1206621721541484607/1206624037418303639/d130407ad3bb6a16a9a484ab626423b7.jpg' if avatar_url == None else avatar_url
+        # avatar_url = 'https://cdn.discordapp.com/attachments/1206621721541484607/1206624037418303639/d130407ad3bb6a16a9a484ab626423b7.jpg' if avatar_url == None else avatar_url
 
         result = WBK.add_webhook(name, tag, ctx.author.id, ctx.author.name, avatar_url)
 
@@ -110,6 +82,16 @@ async def webhooks_list(ctx : commands.Context):
     wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
 
     await ctx.send(embed = wbk_embed)
+
+async def unregister(ctx : commands.Context, name : str):
+    WBK_list = WBK.get_webhooks_list(ctx.author.id)
+
+    for wbk in WBK_list:
+        if name.lower() == wbk[1].lower():
+            result = WBK.remove_webhook(wbk[0])
+            break
+
+    await ctx.send(f'Le webhook "**{name}**" a bien été supprimé') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 
 # slash command
@@ -141,3 +123,13 @@ async def slash_webhooks_list(interaction : discord.Interaction):
     wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
 
     await interaction.response.send_message(embed = wbk_embed)
+
+async def slash_unregister(interaction : discord.Interaction, name : str):
+    WBK_list = WBK.get_webhooks_list(interaction.user.id)
+
+    for wbk in WBK_list:
+        if name.lower() == wbk[1].lower():
+            result = WBK.remove_webhook(wbk[0])
+            break
+
+    await interaction.response.send_message(f'Le webhook "**{name}**" a bien été supprimé') if result else interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')

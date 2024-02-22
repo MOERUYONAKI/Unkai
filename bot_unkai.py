@@ -619,6 +619,14 @@ async def wbk_list(ctx : commands.Context):
 async def slash_wbk_list(interaction : discord.Interaction): # Liste les webhooks d'un compte (fonctionnel)
     await unkai_webhooks.slash_webhooks_list(interaction)
 
+@bot.command(name = "wbk_del")
+async def del_wbk(ctx : commands.Context, name : str):
+    await unkai_webhooks.unregister(ctx, name)
+
+@bot.tree.command(name = "wbk_del")
+async def slash_del_wbk(interaction : discord.Interaction, name : str):
+    await unkai_webhooks.slash_unregister(interaction, name)
+
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
 
