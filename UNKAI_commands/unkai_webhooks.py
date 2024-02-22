@@ -9,9 +9,8 @@ from nacl import *
 import aiohttp
 from .DataBases.UNKAI_wbk.UNKAI_wbk_DB import Webhooks
 
-
-''' 
-async def wbk(ctx : commands.Context, nom : str, msg : str):
+# - Commandes tests
+''' async def wbk(ctx : commands.Context, nom : str, msg : str):
     async with aiohttp.ClientSession() as session:
         wbk_list = await ctx.guild.webhooks()
         found = False
@@ -25,19 +24,6 @@ async def wbk(ctx : commands.Context, nom : str, msg : str):
         if not found:
             await ctx.send(f"Webhook inconnu, essayez \"U!wbk_create\"")
 
-async def create_wbk(ctx : commands.Context, nom : str):
-    wbk_list = await ctx.guild.webhooks()
-    found = False
-
-    for wbk in wbk_list:
-        if nom.lower() == wbk.name.lower():
-            await ctx.send(f"Le webhook \"{nom}\" est déjà présent sur ce serveur")
-            found = True
-
-    if not found:
-        await discord.StageChannel.create_webhook(self = ctx.channel, name = nom)
-        await ctx.send(f"Un webhook du nom de \"{nom}\" a été créé")
-
 async def del_wbk(ctx : commands.Context, nom : str):
     wbk_list = await ctx.guild.webhooks()
     found = False
@@ -49,8 +35,7 @@ async def del_wbk(ctx : commands.Context, nom : str):
             found = True
 
     if not found:
-        await ctx.send(f"Webhook inconnu, suppression impossible")
-''' # Commandes tests
+        await ctx.send(f"Webhook inconnu, suppression impossible") ''' 
 
 intents = discord.Intents.all()
 intents.members = True
@@ -113,6 +98,19 @@ async def register(ctx : commands.Context, name : str, tag : str, avatar_url : s
         else:
             await ctx.send(f'Le webhook "**{name}**" a bien été enregistré')
 
+async def webhooks_list(ctx : commands.Context):
+    WBK_list = WBK.get_webhooks_list(ctx.author.id)
+    wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks' , color = 0x00ffff)
+    lines = 0
+
+    for i in range(len(WBK_list)):
+        wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+        lines += 1
+
+    wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+
+    await ctx.send(embed = wbk_embed)
+
 
 # slash command
 
@@ -130,3 +128,16 @@ async def slash_register(interaction : discord.Interaction, name : str, tag : st
 
         else:
             await interaction.response.send_message(f'Le webhook "**{name}**" a bien été enregistré')
+
+async def slash_webhooks_list(interaction : discord.Interaction):
+    WBK_list = WBK.get_webhooks_list(interaction.user.id)
+    wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks' , color = 0x00ffff)
+    lines = 0
+
+    for i in range(len(WBK_list)):
+        wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+        lines += 1
+
+    wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+
+    await interaction.response.send_message(embed = wbk_embed)

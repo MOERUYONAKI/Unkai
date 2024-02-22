@@ -590,7 +590,7 @@ async def give_role(ctx : commands.Context, role : discord.Role):
     await ctx.send(f'Le rôle **{role}** a été ajouté à tout les membres avec succès !')
 
 
-# - Webhooks
+# - Webhooks - last update = v2
 
 @bot.command(name = "wbk_create")
 async def create_wbk(ctx : commands.Context, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (fonctionnel)
@@ -608,8 +608,16 @@ async def create_wbk(ctx : commands.Context, nom : str, tag : str): # Enregistre
     await unkai_webhooks.register(ctx, nom, tag, avatar)
 
 @bot.tree.command(name = "wbk_create")
-async def create_wbk(interaction : discord.Interaction, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (sans avatar / fonctionnel)
+async def slash_create_wbk(interaction : discord.Interaction, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (sans avatar / fonctionnel)
     await unkai_webhooks.slash_register(interaction, nom, tag)
+
+@bot.command(name = "wbk_list")
+async def wbk_list(ctx : commands.Context):
+    await unkai_webhooks.webhooks_list(ctx)
+
+@bot.tree.command(name = "wbk_list")
+async def slash_wbk_list(interaction : discord.Interaction): # Liste les webhooks d'un compte (fonctionnel)
+    await unkai_webhooks.slash_webhooks_list(interaction)
 
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
