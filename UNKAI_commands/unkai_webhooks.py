@@ -60,8 +60,6 @@ async def register(ctx : commands.Context, name : str, tag : str, avatar_url : s
         await ctx.send(f'Le nom et/ou le tag ne sont pas valide, opération impossible')
 
     else:
-        # avatar_url = 'https://cdn.discordapp.com/attachments/1206621721541484607/1206624037418303639/d130407ad3bb6a16a9a484ab626423b7.jpg' if avatar_url == None else avatar_url
-
         result = WBK.add_webhook(name, tag, ctx.author.id, ctx.author.name, avatar_url)
 
         if not result:
@@ -85,6 +83,7 @@ async def webhooks_list(ctx : commands.Context):
 
 async def unregister(ctx : commands.Context, name : str):
     WBK_list = WBK.get_webhooks_list(ctx.author.id)
+    result = False
 
     for wbk in WBK_list:
         if name.lower() == wbk[1].lower():
@@ -92,6 +91,17 @@ async def unregister(ctx : commands.Context, name : str):
             break
 
     await ctx.send(f'Le webhook "**{name}**" a bien été supprimé') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+
+async def avatar_edit(ctx : commands.Context, name : str, avatar_url : str):
+    WBK_list = WBK.get_webhooks_list(ctx.author.id)
+    result = False
+
+    for wbk in WBK_list:
+        if name.lower() == wbk[1].lower():
+            result = WBK.edit_webhook_avatar(avatar_url, wbk[1], ctx.author.id)
+            break
+
+    await ctx.send(f'L\'avatar du webhook "**{name}**" a bien été modifié') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 
 # slash command
@@ -101,8 +111,6 @@ async def slash_register(interaction : discord.Interaction, name : str, tag : st
         await interaction.response.send_message(f'Le nom et/ou le tag ne sont pas valide, opération impossible')
 
     else:
-        # avatar_url = 'https://cdn.discordapp.com/attachments/1206621721541484607/1206624037418303639/d130407ad3bb6a16a9a484ab626423b7.jpg' if avatar_url == None else avatar_url
-
         result = WBK.add_webhook(name, tag, interaction.user.id, interaction.user.name)
 
         if not result:

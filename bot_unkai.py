@@ -423,6 +423,59 @@ async def unlock(interaction) : # Désactivation anti-raid (fonctionnel)
     await unkai_lock.slash_unlock(interaction, serveurs)
 
 
+# WEBHOOKS - last update = v2
+
+@bot.command(name = "wbk_create")
+async def create_wbk(ctx : commands.Context, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (fonctionnel)
+    avatar = None
+
+    if ctx.message.attachments != []:
+        await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
+
+        channel = bot.get_channel(1206621721541484607)
+        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
+        avatar = image.attachments[0].url
+
+        os.remove("bot UNKAI\\temp_file.png")
+
+    await unkai_webhooks.register(ctx, nom, tag, avatar)
+
+@bot.tree.command(name = "wbk_create")
+async def slash_create_wbk(interaction : discord.Interaction, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (sans avatar / fonctionnel)
+    await unkai_webhooks.slash_register(interaction, nom, tag)
+
+@bot.command(name = "wbk_list")
+async def wbk_list(ctx : commands.Context):
+    await unkai_webhooks.webhooks_list(ctx)
+
+@bot.tree.command(name = "wbk_list")
+async def slash_wbk_list(interaction : discord.Interaction): # Liste les webhooks d'un compte (fonctionnel)
+    await unkai_webhooks.slash_webhooks_list(interaction)
+
+@bot.command(name = "wbk_del")
+async def del_wbk(ctx : commands.Context, name : str):
+    await unkai_webhooks.unregister(ctx, name)
+
+@bot.tree.command(name = "wbk_del")
+async def slash_del_wbk(interaction : discord.Interaction, name : str):
+    await unkai_webhooks.slash_unregister(interaction, name)
+
+@bot.command(name = "wbk_avatar") # Modification de l'avatar (fonctionnel)
+async def edit_wbk_avatar(ctx : commands.Context, name : str):
+    if ctx.message.attachments != []:
+        await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
+
+        channel = bot.get_channel(1206621721541484607)
+        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
+        avatar = image.attachments[0].url
+
+        os.remove("bot UNKAI\\temp_file.png")
+        await unkai_webhooks.avatar_edit(ctx, name, avatar)
+
+    else:
+        await ctx.send("Une image est nécessaire pour modifier l'avatar...")
+
+
 # AUTRE - last update = v1
 
 @bot.command(name = 'spam')
@@ -588,44 +641,6 @@ async def give_role(ctx : commands.Context, role : discord.Role):
             await membre.add_roles(role)
 
     await ctx.send(f'Le rôle **{role}** a été ajouté à tout les membres avec succès !')
-
-
-# - Webhooks - last update = v2
-
-@bot.command(name = "wbk_create")
-async def create_wbk(ctx : commands.Context, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (fonctionnel)
-    avatar = None
-
-    if ctx.message.attachments != []:
-        await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
-
-        channel = bot.get_channel(1206621721541484607)
-        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
-        avatar = image.attachments[0].url
-
-        os.remove("bot UNKAI\\temp_file.png")
-
-    await unkai_webhooks.register(ctx, nom, tag, avatar)
-
-@bot.tree.command(name = "wbk_create")
-async def slash_create_wbk(interaction : discord.Interaction, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (sans avatar / fonctionnel)
-    await unkai_webhooks.slash_register(interaction, nom, tag)
-
-@bot.command(name = "wbk_list")
-async def wbk_list(ctx : commands.Context):
-    await unkai_webhooks.webhooks_list(ctx)
-
-@bot.tree.command(name = "wbk_list")
-async def slash_wbk_list(interaction : discord.Interaction): # Liste les webhooks d'un compte (fonctionnel)
-    await unkai_webhooks.slash_webhooks_list(interaction)
-
-@bot.command(name = "wbk_del")
-async def del_wbk(ctx : commands.Context, name : str):
-    await unkai_webhooks.unregister(ctx, name)
-
-@bot.tree.command(name = "wbk_del")
-async def slash_del_wbk(interaction : discord.Interaction, name : str):
-    await unkai_webhooks.slash_unregister(interaction, name)
 
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
