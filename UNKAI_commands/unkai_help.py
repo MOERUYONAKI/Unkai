@@ -32,8 +32,17 @@ async def help(ctx, catégorie : str = 'all'): # aides : liste des commandes (fo
         
         await ctx.send(embed = embed)
     
-    elif catégorie.value == 'meteo':
+    elif catégorie == 'meteo':
         await ctx.send(embed = discord.Embed(title = 'Météo :', description = '> **meteo** *[nom de la région] [climat] [durée]*' + '\n' + "Crée une météo selon le climat sur une durée de 1 à 7 jours" + '\n' + '\n' + "> **nom de la région**" + '\n' + "Choix du nom affiché sur la météo" + '\n' + '\n' + "> **climat**" + '\n' + "Choix du climat entre 'desert', 'temperate', 'cold' ou un nom secret" + '\n' + '\n' + "> **durée**" + '\n' + "Choix du nombre de jours de météo entre 1 et 7 jours", color = 0x00ffff))
+    
+    elif catégorie == 'webhooks':
+        embed = discord.Embed(title = 'Webhooks :', color = 0x00ffff)
+        embed.add_field(name = "> **wbk_create** *[nom]* *[tag]*", value = "Enregistre un nouveau webhook", inline = False)
+        embed.add_field(name = "> **wbk_list**", value = "Liste vos webhooks", inline = False)
+        embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistrés", inline = False)
+        embed.add_field(name = "> **wbk_avatar** *[nom]*", value = "Change l'avatar du webhook", inline = False)
+
+        await ctx.send(embed = embed)
     
     print("Envoie d'un coup de main")
 
@@ -56,7 +65,16 @@ async def slash_help(interaction : discord.Interaction, catégorie : str = 'all'
         
         await interaction.response.send_message(embed = embed)
     
-    elif catégorie.value == 'meteo':
+    elif catégorie == 'meteo':
         await interaction.response.send_message(embed = discord.Embed(title = 'Météo :', description = '> **meteo** *[nom de la région] [climat] [durée]*' + '\n' + "Crée une météo selon le climat sur une durée de 1 à 7 jours" + '\n' + '\n' + "> **nom de la région**" + '\n' + "Choix du nom affiché sur la météo" + '\n' + '\n' + "> **climat**" + '\n' + "Choix du climat entre 'desert', 'temperate', 'cold' ou un nom secret" + '\n' + '\n' + "> **durée**" + '\n' + "Choix du nombre de jours de météo entre 1 et 7 jours", color = 0x00ffff))
-    
+        
+    elif catégorie == 'webhooks':
+        embed = discord.Embed(title = 'Webhooks :', color = 0x00ffff)
+        embed.add_field(name = "> **wbk_create** *[nom]* *[tag]*", value = "Enregistre un nouveau webhook", inline = False)
+        embed.add_field(name = "> **wbk_list**", value = "Liste vos webhooks", inline = False)
+        embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistrés", inline = False)
+        embed.add_field(name = "> **wbk_avatar** *[nom]*", value = "Change l'avatar du webhook", inline = False)
+
+        await interaction.response.send_message(embed = embed)
+
     print("Envoie d'un coup de main")

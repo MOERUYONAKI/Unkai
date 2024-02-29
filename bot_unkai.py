@@ -113,19 +113,19 @@ async def help(ctx : commands.Context, catégorie : str = 'all'):
     if catégorie.lower() == 'meteo':
         await unkai_help.help(ctx, 'meteo')
 
+    elif catégorie.lower() == 'webhooks':
+        await unkai_help.help(ctx, 'webhooks')
+
     else:
         await unkai_help.help(ctx)
 
 @bot.tree.command(name = 'help')
 @app_commands.choices(catégorie = [
     app_commands.Choice(name = 'Tout', value = 'all'),
-    app_commands.Choice(name = "Météo", value = "meteo")])
+    app_commands.Choice(name = "Météo", value = "meteo"),
+    app_commands.Choice(name = "Webhooks", value = "webhooks")])
 async def slash_help(interaction : discord.Interaction, catégorie : app_commands.Choice[str] = None): # aides : liste des commandes (fonctionnel)
-    if catégorie == None or catégorie.value == 'all':
-        await unkai_help.slash_help(interaction)
-    
-    elif catégorie.value == 'meteo':
-        await unkai_help.slash_help(interaction, 'meteo')
+    await unkai_help.slash_help(interaction, catégorie.value if catégorie != None else 'all')
 
 
 # PING - last update = v2
