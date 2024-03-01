@@ -457,11 +457,11 @@ async def del_wbk(ctx : commands.Context, name : str):
     await unkai_webhooks.unregister(ctx, name)
 
 @bot.tree.command(name = "wbk_del")
-async def slash_del_wbk(interaction : discord.Interaction, name : str):
+async def slash_del_wbk(interaction : discord.Interaction, name : str): # Suppression d'un webhook (fonctionnel)
     await unkai_webhooks.slash_unregister(interaction, name)
 
-@bot.command(name = "wbk_avatar") # Modification de l'avatar (fonctionnel)
-async def edit_wbk_avatar(ctx : commands.Context, name : str):
+@bot.command(name = "wbk_avatar")
+async def edit_wbk_avatar(ctx : commands.Context, name : str): # Modification de l'avatar (fonctionnel)
     if ctx.message.attachments != []:
         await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
 
@@ -474,6 +474,14 @@ async def edit_wbk_avatar(ctx : commands.Context, name : str):
 
     else:
         await ctx.send("Une image est nécessaire pour modifier l'avatar...")
+
+@bot.command(name = "wbk_rename")
+async def edit_wbk_name(ctx : commands.Context, name : str, new_name : str):
+    await unkai_webhooks.name_edit(ctx, name, new_name)
+
+@bot.tree.command(name = "wbk_rename")
+async def slash_edit_wbk_name(interaction : discord.Interaction, name : str, new_name : str): # Modification du nom (fonctionnel)
+    await unkai_webhooks.slash_name_edit(interaction, name, new_name)
 
 
 # AUTRE - last update = v1
@@ -492,7 +500,7 @@ async def spam(ctx : commands.Context, arg1, arg2 : int): # Spam un message donn
 
 
 @bot.event
-async def on_ready() :
+async def on_ready():
     await bot.tree.sync()
     activity = discord.Game(name = "/help")
     await bot.change_presence(status = discord.Status.idle, activity = activity)
@@ -504,7 +512,7 @@ async def on_ready() :
         serveurs.append(Serveur(guild.id))
 
 @bot.event
-async def on_message(message) : # réaction aux messages (fonctionnel)
+async def on_message(message): # réaction aux messages (fonctionnel)
     await bot.process_commands(message)
     await unkai_webhooks.check_message(message) # - Webhooks
 
@@ -521,7 +529,7 @@ async def on_message(message) : # réaction aux messages (fonctionnel)
             print(f'{message.author} dit "{message.content.lower()}"')
 
 @bot.event
-async def on_message_edit(before, after) : # réaction aux messages (fonctionnel)
+async def on_message_edit(before, after): # réaction aux messages (fonctionnel)
     list_words = ['hey', 'yo', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 're', 'wesh', 'wsh', 'salam']
     Before = before.content.lower()
     After = after.content.lower()
@@ -544,7 +552,7 @@ async def on_message_edit(before, after) : # réaction aux messages (fonctionnel
         await msg.delete()
 
 @bot.event     
-async def on_member_join(member : discord.Member) : # bienvenue (fonctionnel)
+async def on_member_join(member : discord.Member): # bienvenue (fonctionnel)
     print(f'{member} a rejoint un de nos serveurs ({member.guild})')
 
     try: # Message de bienvenue - mp
@@ -570,7 +578,7 @@ async def on_member_join(member : discord.Member) : # bienvenue (fonctionnel)
             await member.guild.kick(user = member, reason = 'Le serveur est actuellement verrouillé')
 
 @bot.event
-async def on_member_remove(member) : # adieu (fonctionnel)
+async def on_member_remove(member): # adieu (fonctionnel)
     print(f'{member} a quitté un de nos serveurs ({member.guild})')
 
 
@@ -578,7 +586,7 @@ async def on_member_remove(member) : # adieu (fonctionnel)
 
 
 @bot.command(name = 'play')
-async def play(ctx : commands.Context, * , arg) : # joue la musique demandée dans un salon vocal (non fonctionnel)
+async def play(ctx : commands.Context, * , arg): # joue la musique demandée dans un salon vocal (non fonctionnel)
     channel = ctx.message.author.voice.channel
     await channel.connect()
 

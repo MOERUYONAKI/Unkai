@@ -41,6 +41,7 @@ async def help(ctx, catégorie : str = 'all'): # aides : liste des commandes (fo
         embed.add_field(name = "> **wbk_list**", value = "Liste vos webhooks", inline = False)
         embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistrés", inline = False)
         embed.add_field(name = "> **wbk_avatar** *[nom]*", value = "Change l'avatar du webhook", inline = False)
+        embed.add_field(name = "> **wbk_rename** *[nom]* *[nouveau_nom]*", value = "Change le nom du webhook", inline = False)
 
         await ctx.send(embed = embed)
     
@@ -74,6 +75,7 @@ async def slash_help(interaction : discord.Interaction, catégorie : str = 'all'
         embed.add_field(name = "> **wbk_list**", value = "Liste vos webhooks", inline = False)
         embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistrés", inline = False)
         embed.add_field(name = "> **wbk_avatar** *[nom]*", value = "Change l'avatar du webhook", inline = False)
+        embed.add_field(name = "> **wbk_rename** *[nom]* *[nouveau_nom]*", value = "Change le nom du webhook", inline = False)
 
         await interaction.response.send_message(embed = embed)
 
