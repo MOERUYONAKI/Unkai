@@ -511,6 +511,15 @@ async def spam(ctx : commands.Context, arg1, arg2 : int): # Spam un message donn
     await ctx.send(f'Spammé {arg2} fois !')
     print(arg1, "spammé", arg2, "fois !") 
 
+@bot.command(name = 'give_all')
+@has_permissions(administrator = True)
+async def give_role(ctx : commands.Context, role : discord.Role): # Ajoute les rôle mentionné à tout les membres du serveur (fonctionnel)
+    for membre in ctx.guild.members:
+        if role not in membre.roles and not membre.public_flags.verified_bot:
+            await membre.add_roles(role)
+
+    await ctx.send(f'Le rôle **{role}** a été ajouté à tout les membres avec succès !')
+
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
 
@@ -611,15 +620,6 @@ async def play(ctx : commands.Context, * , arg): # joue la musique demandée dan
     
     else:
         await ctx.send(f'Nom invalide')
-
-@bot.command(name = 'give_all')
-@has_permissions(administrator = True)
-async def give_role(ctx : commands.Context, role : discord.Role): # Ajoute les rôle mentionné à tout les membres du serveur (à tester)
-    for membre in ctx.guild.members:
-        if role not in membre.roles:
-            await membre.add_roles(role)
-
-    await ctx.send(f'Le rôle **{role}** a été ajouté à tout les membres avec succès !')
 
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
