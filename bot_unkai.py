@@ -491,6 +491,14 @@ async def edit_wbk_name(ctx : commands.Context, name : str, new_tag : str):
 async def slash_edit_wbk_name(interaction : discord.Interaction, name : str, new_tag : str): # Modification du tag (fonctionnel)
     await unkai_webhooks.slash_tag_edit(interaction, name, new_tag)
 
+@bot.command(name = "wbk_search")
+async def search_wbk(ctx : commands.Context, name : str):
+    await unkai_webhooks.search(ctx, name)
+
+@bot.tree.command(name = "wbk_search")
+async def slash_search_wbk(interaction : discord.Interaction, name : str): # Liste les webhooks correspondants (fonctionnel)
+    await unkai_webhooks.slash_search(interaction, name)
+
 
 # AUTRE - last update = v1
 

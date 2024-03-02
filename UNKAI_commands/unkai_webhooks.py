@@ -74,7 +74,7 @@ async def register(ctx : commands.Context, name : str, tag : str, avatar_url : s
             await ctx.send(f'Le webhook "**{name}**" a bien été enregistré')
 
 async def webhooks_list(ctx : commands.Context):
-    WBK_list = WBK.get_webhooks_list(ctx.author.id)
+    WBK_list = WBK.get_webhooks_list(ctx.author.id) if WBK.get_webhooks_list(ctx.author.id) else []
     wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks' , color = 0x00ffff)
     lines = 0
 
@@ -95,7 +95,7 @@ async def unregister(ctx : commands.Context, name : str):
             result = WBK.remove_webhook(wbk[0])
             break
 
-    await ctx.send(f'Le webhook "**{name}**" a bien été supprimé') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await ctx.send(f'Le webhook "**{name}**" a bien été supprimé') if result else await ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 async def avatar_edit(ctx : commands.Context, name : str, avatar_url : str):
     WBK_list = WBK.get_webhooks_list(ctx.author.id)
@@ -106,7 +106,7 @@ async def avatar_edit(ctx : commands.Context, name : str, avatar_url : str):
             result = WBK.edit_webhook_avatar(avatar_url, wbk[1], ctx.author.id)
             break
 
-    await ctx.send(f'L\'avatar du webhook "**{name}**" a bien été modifié') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await ctx.send(f'L\'avatar du webhook "**{name}**" a bien été modifié') if result else await ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 async def name_edit(ctx : commands.Context, name : str, new_name : str):
     WBK_list = WBK.get_webhooks_list(ctx.author.id)
@@ -117,7 +117,7 @@ async def name_edit(ctx : commands.Context, name : str, new_name : str):
             result = WBK.edit_webhook_name(new_name, wbk[1], ctx.author.id)
             break
 
-    await ctx.send(f'Le nom du webhook "**{name}**" a bien été modifié en "**{new_name}**"') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await ctx.send(f'Le nom du webhook "**{name}**" a bien été modifié en "**{new_name}**"') if result else await ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 async def tag_edit(ctx : commands.Context, name : str, new_tag : str):
     WBK_list = WBK.get_webhooks_list(ctx.author.id)
@@ -128,7 +128,21 @@ async def tag_edit(ctx : commands.Context, name : str, new_tag : str):
             result = WBK.edit_webhook_tag(new_tag, wbk[1], ctx.author.id)
             break
 
-    await ctx.send(f'Le tag du webhook "**{name}**" a bien été modifié en "**{new_tag}**"') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await ctx.send(f'Le tag du webhook "**{name}**" a bien été modifié en "**{new_tag}**"') if result else await ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+
+async def search(ctx : commands.Context, name : str):
+    WBK_list = WBK.get_webhooks_list(ctx.author.id)
+    wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks' , color = 0x00ffff)
+    lines = 0
+
+    for i in range(len(WBK_list)):
+        if name.lower() in WBK_list[i][1].lower():
+            wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+            lines += 1
+
+    wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+            
+    await ctx.send(embed = wbk_embed)
 
 
 # slash command
@@ -147,7 +161,7 @@ async def slash_register(interaction : discord.Interaction, name : str, tag : st
             await interaction.response.send_message(f'Le webhook "**{name}**" a bien été enregistré')
 
 async def slash_webhooks_list(interaction : discord.Interaction):
-    WBK_list = WBK.get_webhooks_list(interaction.user.id)
+    WBK_list = WBK.get_webhooks_list(interaction.user.id) if WBK.get_webhooks_list(interaction.user.id) else []
     wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks' , color = 0x00ffff)
     lines = 0
 
@@ -167,7 +181,7 @@ async def slash_unregister(interaction : discord.Interaction, name : str):
             result = WBK.remove_webhook(wbk[0])
             break
 
-    await interaction.response.send_message(f'Le webhook "**{name}**" a bien été supprimé') if result else interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await interaction.response.send_message(f'Le webhook "**{name}**" a bien été supprimé') if result else await interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 async def slash_name_edit(interaction : discord.Interaction, name : str, new_name : str):
     WBK_list = WBK.get_webhooks_list(interaction.user.id)
@@ -178,7 +192,7 @@ async def slash_name_edit(interaction : discord.Interaction, name : str, new_nam
             result = WBK.edit_webhook_name(new_name, wbk[1], interaction.user.id)
             break
 
-    await interaction.response.send_message(f'Le nom du webhook "**{name}**" a bien été modifié en "**{new_name}**"') if result else interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await interaction.response.send_message(f'Le nom du webhook "**{name}**" a bien été modifié en "**{new_name}**"') if result else await interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
 async def slash_tag_edit(interaction : discord.Interaction, name : str, new_tag : str):
     WBK_list = WBK.get_webhooks_list(interaction.user.id)
@@ -189,4 +203,18 @@ async def slash_tag_edit(interaction : discord.Interaction, name : str, new_tag 
             result = WBK.edit_webhook_tag(new_tag, wbk[1], interaction.user.id)
             break
 
-    await interaction.response.send_message(f'Le tag du webhook "**{name}**" a bien été modifié en "**{new_tag}**"') if result else interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+    await interaction.response.send_message(f'Le tag du webhook "**{name}**" a bien été modifié en "**{new_tag}**"') if result else await interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+
+async def slash_search(interaction : discord.Interaction, name : str):
+    WBK_list = WBK.get_webhooks_list(interaction.user.id)
+    wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks' , color = 0x00ffff)
+    lines = 0
+
+    for i in range(len(WBK_list)):
+        if name.lower() in WBK_list[i][1].lower():
+            wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+            lines += 1
+
+    wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+            
+    await interaction.response.send_message(embed = wbk_embed)

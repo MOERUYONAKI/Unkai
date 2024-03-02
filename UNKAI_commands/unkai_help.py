@@ -39,10 +39,11 @@ async def help(ctx, catégorie : str = 'all'): # aides : liste des commandes (fo
         embed = discord.Embed(title = 'Webhooks :', color = 0x00ffff)
         embed.add_field(name = "> **wbk_create** *[nom]* *[tag]*", value = "Enregistre un nouveau webhook", inline = False)
         embed.add_field(name = "> **wbk_list**", value = "Liste vos webhooks", inline = False)
-        embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistrés", inline = False)
+        embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistré", inline = False)
         embed.add_field(name = "> **wbk_avatar** *[nom]*", value = "Change l'avatar du webhook", inline = False)
         embed.add_field(name = "> **wbk_rename** *[nom]* *[nouveau_nom]*", value = "Change le nom du webhook", inline = False)
         embed.add_field(name = "> **wbk_tag** *[nom]* *[nouveau_tag]*", value = "Change le tag du webhook", inline = False)
+        embed.add_field(name = "> **wbk_search** *[nom]*", value = "Liste vos webhooks correspondants au nom indiqué", inline = False)
 
         await ctx.send(embed = embed)
     
@@ -74,10 +75,11 @@ async def slash_help(interaction : discord.Interaction, catégorie : str = 'all'
         embed = discord.Embed(title = 'Webhooks :', color = 0x00ffff)
         embed.add_field(name = "> **wbk_create** *[nom]* *[tag]*", value = "Enregistre un nouveau webhook", inline = False)
         embed.add_field(name = "> **wbk_list**", value = "Liste vos webhooks", inline = False)
-        embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistrés", inline = False)
+        embed.add_field(name = "> **wbk_del** *[nom]*", value = "Supprime un webhook enregistré", inline = False)
         embed.add_field(name = "> **wbk_avatar** *[nom]*", value = "Change l'avatar du webhook", inline = False)
         embed.add_field(name = "> **wbk_rename** *[nom]* *[nouveau_nom]*", value = "Change le nom du webhook", inline = False)
         embed.add_field(name = "> **wbk_tag** *[nom]* *[nouveau_tag]*", value = "Change le tag du webhook", inline = False)
+        embed.add_field(name = "> **wbk_search** *[nom]*", value = "Liste vos webhooks correspondants au nom indiqué", inline = False)
 
         await interaction.response.send_message(embed = embed)
 
