@@ -24,7 +24,7 @@ async def help(ctx, catégorie : str = 'all'): # aides : liste des commandes (fo
         embed.add_field(name = "> **invite** *[serveur]*", value = "Envoie le lien d'invitation du serveur demandé", inline = False)
         embed.add_field(name = '> **clear** *[nombre de messages]*', value = "Supprime le nombre demandé de messages", inline = False)
         embed.add_field(name = '> **nar** *[texte]*', value = "Renvoie du message par le narrateur", inline = False)
-        embed.add_field(name = '> **e-nar** *[texte]*', value = "Renvoie du message par le narrateur (embed)", inline = False)
+        embed.add_field(name = '> **e_nar** *[texte]*', value = "Renvoie du message par le narrateur (embed)", inline = False)
         embed.add_field(name = "> **roll** *[maximum]* *[nombre de lancers]*", value = "Calcule un nombre aléatoire entre 1 et le maximum le nombre de fois demandé", inline = False)
         embed.add_field(name = '> **meteo** *[nom de la région] [climat] [durée]*', value = "Crée une météo selon le climat sur une durée de 1 à 7 jours", inline = False)
         embed.add_field(name = '> **kick** *[utilisateur] [raison]*', value = "Exclut l'utilisateur du serveur", inline = False)
@@ -47,7 +47,7 @@ async def help(ctx, catégorie : str = 'all'): # aides : liste des commandes (fo
 
         await ctx.send(embed = embed)
     
-    print("Envoie d'un coup de main")
+    print("Envois d'un coup de main")
 
 
 # slash command
@@ -60,7 +60,7 @@ async def slash_help(interaction : discord.Interaction, catégorie : str = 'all'
         embed.add_field(name = "> **invite** *[serveur]*", value = "Envoie le lien d'invitation du serveur demandé", inline = False)
         embed.add_field(name = '> **clear** *[nombre de messages]*', value = "Supprime le nombre demandé de messages", inline = False)
         embed.add_field(name = '> **nar** *[texte]*', value = "Renvoie du message par le narrateur", inline = False)
-        embed.add_field(name = '> **e-nar** *[texte]*', value = "Renvoie du message par le narrateur (embed)", inline = False)
+        embed.add_field(name = '> **e_nar** *[texte]*', value = "Renvoie du message par le narrateur (embed)", inline = False)
         embed.add_field(name = "> **roll** *[maximum]* *[nombre de lancers]*", value = "Calcule un nombre aléatoire entre 1 et le maximum le nombre de fois demandé", inline = False)
         embed.add_field(name = '> **meteo** *[nom de la région] [climat] [durée]*', value = "Crée une météo selon le climat sur une durée de 1 à 7 jours", inline = False)
         embed.add_field(name = '> **kick** *[utilisateur] [raison]*', value = "Exclut l'utilisateur du serveur", inline = False)
@@ -83,4 +83,4 @@ async def slash_help(interaction : discord.Interaction, catégorie : str = 'all'
 
         await interaction.response.send_message(embed = embed)
 
-    print("Envoie d'un coup de main")
+    print("Envois d'un coup de main")

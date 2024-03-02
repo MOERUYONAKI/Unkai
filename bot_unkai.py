@@ -150,7 +150,7 @@ async def slash_ms(interaction : discord.Interaction): # mesure du ping (fonctio
 
 @bot.tree.command(name = 'info')
 async def infos(interaction : discord.Interaction): # About Unkai (non fonctionnel)
-    info_embed = discord.Embed(title = 'À propos de Unkai - More about Unkai', description = '*En cours de crétion...* \n \n *In cours of creation...*', color = 0x00ffff)
+    info_embed = discord.Embed(title = 'À propos de Unkai - More about Unkai', description = '*En cours de création...* \n \n *In cours of creation...*', color = 0x00ffff)
     info_embed.set_author(name = interaction.user.name, icon_url = interaction.user.avatar_url)
 
     print(f'{interaction.user.name} veut en savoir plus sur Unkai !')
@@ -187,7 +187,7 @@ async def clear(ctx : commands.Context, nombre : int = 1):
     await unkai_clear.clear(ctx, nombre)
 
 @bot.tree.command(name = 'clear')
-@has_permissions(manage_messages = True)
+@app_commands.checks.has_permissions(manage_messages = True)
 async def suppression(interaction : discord.Interaction, nombre : int = 1) : # suppression de messages (fonctionnel)
     await unkai_clear.slash_clear(interaction, nombre) 
 
@@ -321,7 +321,7 @@ async def narration(ctx : commands.Context, * , nar): # narration (fonctionnel)
     await ctx.message.delete()    
     await ctx.send(nar)
 
-@bot.command(name = 'e-nar')
+@bot.command(name = 'e_nar')
 async def embed_narration(ctx : commands.Context, titre,  * , nar): # embed narration (fonctionnel)
     if len(nar) < 100:
         print(f'Envois du message : {nar} (embed)')
@@ -353,7 +353,7 @@ async def meteo(ctx : commands.Context, nom : str, climat : int, saison : int, d
     await unkai_meteo.meteo(ctx, nom, climat, saison, durée, last_temp)
 
 @bot.tree.command(name = 'meteo')
-@has_permissions(administrator = True)
+@app_commands.checks.has_permissions(administrator = True)
 async def slash_meteo(interaction : discord.Interaction, nom : str, climat : int, saison : int, durée : int, dernière_température : float = None) : # météo avec températures (fonctionnel)
     await unkai_meteo.slash_meteo(interaction, nom, climat, saison, durée, dernière_température)
 
@@ -371,12 +371,12 @@ async def ban(ctx : commands.Context, member : discord.Member, * , reason = 'auc
     await unkai_mod.kick(ctx, member, reason, 2)
 
 @bot.tree.command(name = 'kick')
-@has_permissions(kick_members = True)
+@app_commands.checks.has_permissions(kick_members = True)
 async def slash_kick(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
     await unkai_mod.slash_kick(interaction, membre, raison, 1)
 
 @bot.tree.command(name = 'ban')
-@has_permissions(ban_members = True)
+@app_commands.checks.has_permissions(ban_members = True)
 async def slash_ban(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
     await unkai_mod.slash_kick(interaction, membre, raison, 2)
 
@@ -413,12 +413,12 @@ async def unlock(ctx : commands.Context) : # Désactivation anti-raid (fonctionn
     await unkai_lock.unlock(ctx, serveurs)
 
 @bot.tree.command(name = 'lock')
-@has_permissions(administrator = True)
+@app_commands.checks.has_permissions(administrator = True)
 async def lock(interaction) : # Activation anti-raid (fonctionnel)
     await unkai_lock.slash_lock(interaction, serveurs)
 
 @bot.tree.command(name = 'unlock')
-@has_permissions(administrator = True)
+@app_commands.checks.has_permissions(administrator = True)
 async def unlock(interaction) : # Désactivation anti-raid (fonctionnel)
     await unkai_lock.slash_unlock(interaction, serveurs)
 
@@ -611,11 +611,11 @@ async def on_member_remove(member): # adieu (fonctionnel)
 
 
 @bot.command(name = 'play')
-async def play(ctx : commands.Context, * , arg): # joue la musique demandée dans un salon vocal (non fonctionnel)
+async def play(ctx : commands.Context, * , song_name : str = ''): # joue la musique demandée dans un salon vocal (non fonctionnel)
     channel = ctx.message.author.voice.channel
     await channel.connect()
 
-    if arg.lower() == 'dead to me':
+    if song_name.lower() == 'dead to me':
         await play(discord.FFmpegPCMAudio(source = 'bot UNKAI\\songs\\Sex Whales & Fraxo - Dead to me.wav', executable = 'C:\\users\\1bbor\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.9_qbz5n2kfra8p0\\localcache\\local-packages\\python39\\site-packages\\ffmpeg'))
     
     else:
