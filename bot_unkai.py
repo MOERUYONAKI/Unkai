@@ -483,6 +483,14 @@ async def edit_wbk_name(ctx : commands.Context, name : str, new_name : str):
 async def slash_edit_wbk_name(interaction : discord.Interaction, name : str, new_name : str): # Modification du nom (fonctionnel)
     await unkai_webhooks.slash_name_edit(interaction, name, new_name)
 
+@bot.command(name = "wbk_tag")
+async def edit_wbk_name(ctx : commands.Context, name : str, new_tag : str):
+    await unkai_webhooks.tag_edit(ctx, name, new_tag)
+
+@bot.tree.command(name = "wbk_tag")
+async def slash_edit_wbk_name(interaction : discord.Interaction, name : str, new_tag : str): # Modification du tag (fonctionnel)
+    await unkai_webhooks.slash_tag_edit(interaction, name, new_tag)
+
 
 # AUTRE - last update = v1
 

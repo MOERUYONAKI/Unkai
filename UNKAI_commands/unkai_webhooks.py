@@ -50,7 +50,12 @@ async def check_message(message : discord.Message):
 
                 if f'UnkaiWBK_{WBK_list[i][0]}' in WBK_names:
                     webhook = Webhook.from_url(guild_WBK_list[WBK_names.index(f'UnkaiWBK_{WBK_list[i][0]}')].url, session = session)
-                    await webhook.send(message.content[len(tag) :], username = WBK_list[i][1], avatar_url = WBK_list[i][3]) 
+                    
+                    if webhook.channel != message.channel:
+                        await webhook.delete()
+                        webhook = await discord.StageChannel.create_webhook(self = message.channel, name = f'UnkaiWBK_{WBK_list[i][0]}')
+
+                    await webhook.send(message.content[len(tag) :], username = WBK_list[i][1], avatar_url = WBK_list[i][3])
 
 
 # base command
@@ -114,6 +119,17 @@ async def name_edit(ctx : commands.Context, name : str, new_name : str):
 
     await ctx.send(f'Le nom du webhook "**{name}**" a bien été modifié en "**{new_name}**"') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
 
+async def tag_edit(ctx : commands.Context, name : str, new_tag : str):
+    WBK_list = WBK.get_webhooks_list(ctx.author.id)
+    result = False
+
+    for wbk in WBK_list:
+        if name.lower() == wbk[1].lower():
+            result = WBK.edit_webhook_tag(new_tag, wbk[1], ctx.author.id)
+            break
+
+    await ctx.send(f'Le tag du webhook "**{name}**" a bien été modifié en "**{new_tag}**"') if result else ctx.send(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+
 
 # slash command
 
@@ -163,3 +179,14 @@ async def slash_name_edit(interaction : discord.Interaction, name : str, new_nam
             break
 
     await interaction.response.send_message(f'Le nom du webhook "**{name}**" a bien été modifié en "**{new_name}**"') if result else interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
+
+async def slash_tag_edit(interaction : discord.Interaction, name : str, new_tag : str):
+    WBK_list = WBK.get_webhooks_list(interaction.user.id)
+    result = False
+
+    for wbk in WBK_list:
+        if name.lower() == wbk[1].lower():
+            result = WBK.edit_webhook_tag(new_tag, wbk[1], interaction.user.id)
+            break
+
+    await interaction.response.send_message(f'Le tag du webhook "**{name}**" a bien été modifié en "**{new_tag}**"') if result else interaction.response.send_message(f'Aucun webhook corespondant, essayez "U!wbk_list"...')
