@@ -612,54 +612,9 @@ async def play(ctx : commands.Context, * , arg): # joue la musique demandée dan
     else:
         await ctx.send(f'Nom invalide')
 
-@bot.command(name = 'katsu_roll')
-async def katsu_roll(ctx : commands.Context, msg):
-    roll = r.Katsu_roll(msg)
-    if type(roll) is list:
-        cmd = ''
-        if msg[0] == 'd':
-            for elt in roll[0][1 : len(roll[0])]:
-                cmd += str(elt)
-                
-        else:
-            for elt in roll[0]:
-                cmd += str(elt)
-        
-        results = 0
-        rolls = ""
-        for i in range(len(roll[1])):
-            results += roll[1][i][1]
-            if i == 0:
-                rolls += str(roll[1][i][0])
-            
-            else:
-                rolls += ", " + str(roll[1][i][0])
-            
-        await ctx.send(f'```# {results}\nDétails : {cmd} ({rolls})```')
-            
-    else:
-        await ctx.send(roll)
-
-@bot.command(name = 'reset_role')
-@has_permissions(administrator = True)
-async def kick_role(ctx : commands.Context, role : discord.Role, * , reason = 'aucune raison spécifiée'): # reset les rôles de tout les membres possédant le rôle demandé (non fonctionnel)
-    namekick = f'Les rôles des membres possédant le rôle "{role}" ont été réinitialisés'
-    reasonkick = f'**Raison :** {reason}'
-
-    for membre in ctx.guild.members:
-        if role in membre.roles:
-            for r in membre.roles:
-                r = discord.utils.get(ctx.guild.roles, id = r)
-                await membre.remove_roles(r)
-                
-            rl = discord.utils.get(ctx.guild.roles, id = 872067134811938867)
-            await membre.add_roles(rl)
-
-    await ctx.send(embed=discord.Embed(title = namekick, description = reasonkick, color = 0x00ffff))
-
 @bot.command(name = 'give_all')
 @has_permissions(administrator = True)
-async def give_role(ctx : commands.Context, role : discord.Role):
+async def give_role(ctx : commands.Context, role : discord.Role): # Ajoute les rôle mentionné à tout les membres du serveur (à tester)
     for membre in ctx.guild.members:
         if role not in membre.roles:
             await membre.add_roles(role)
