@@ -15,6 +15,79 @@ intents.members = True
 bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents = intents)
 WBK = Webhooks()
 
+class button_view(discord.ui.View): # Changement de page (wbk_list)
+    def __init__(self):
+        super().__init__(timeout = None)
+        self.page_id = 1
+        self.max_page = 0
+        
+    @discord.ui.button(label = "⬅️", custom_id = "left")
+    async def left(self, interaction : discord.Interaction, button : discord.ui.Button):
+        WBK_list = WBK.get_webhooks_list(interaction.user.id) if WBK.get_webhooks_list(interaction.user.id) else []
+        self.max_page = len(WBK_list)
+        lines = 0
+
+        if self.page_id > 1:
+            self.page_id -= 1
+
+        wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks - page {self.page_id}' , color = 0x00ffff)
+
+        for i in range((10 * (self.page_id - 1)), len(WBK_list)):
+            wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+            lines += 1
+
+            if lines == 10:
+                break
+
+        wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+        
+        await interaction.message.edit(embed = wbk_embed)
+        await interaction.response.defer()
+
+    @discord.ui.button(label = "...", custom_id = "reset")
+    async def reset(self, interaction : discord.Interaction, button : discord.ui.Button):
+        WBK_list = WBK.get_webhooks_list(interaction.user.id) if WBK.get_webhooks_list(interaction.user.id) else []
+        self.max_page = len(WBK_list)
+        lines = 0
+        
+        self.page_id = 1
+        wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks - page {self.page_id}' , color = 0x00ffff)
+
+        for i in range(len(WBK_list)):
+            wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+            lines += 1
+
+            if lines == 10:
+                break
+
+        wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+
+        await interaction.message.edit(embed = wbk_embed)
+        await interaction.response.defer()
+
+    @discord.ui.button(label = "➡️", custom_id = "right")
+    async def right(self, interaction : discord.Interaction, button : discord.ui.Button):
+        WBK_list = WBK.get_webhooks_list(interaction.user.id) if WBK.get_webhooks_list(interaction.user.id) else []
+        self.max_page = len(WBK_list)
+        lines = 0
+
+        if self.page_id < self.max_page:
+            self.page_id += 1
+
+        wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks - page {self.page_id}' , color = 0x00ffff)
+
+        for i in range((10 * (self.page_id - 1)), len(WBK_list)):
+            wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
+            lines += 1
+
+            if lines == 10:
+                break
+
+        wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
+        
+        await interaction.message.edit(embed = wbk_embed)
+        await interaction.response.defer()
+
 def check_validity(string : str): # True si valide, False sinon 
     word = ""
 
@@ -75,16 +148,19 @@ async def register(ctx : commands.Context, name : str, tag : str, avatar_url : s
 
 async def webhooks_list(ctx : commands.Context):
     WBK_list = WBK.get_webhooks_list(ctx.author.id) if WBK.get_webhooks_list(ctx.author.id) else []
-    wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks' , color = 0x00ffff)
+    wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks - page 1' , color = 0x00ffff) if len(WBK_list) > 10 else discord.Embed(title = f'{ctx.author.name}\'s webhooks' , color = 0x00ffff)
     lines = 0
 
     for i in range(len(WBK_list)):
         wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
         lines += 1
 
+        if lines == 10:
+            break
+
     wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
 
-    await ctx.send(embed = wbk_embed)
+    await ctx.send(embed = wbk_embed, view = button_view()) if len(WBK_list) > 10 else await ctx.send(embed = wbk_embed)
 
 async def unregister(ctx : commands.Context, name : str):
     WBK_list = WBK.get_webhooks_list(ctx.author.id)
@@ -140,6 +216,10 @@ async def search(ctx : commands.Context, name : str):
             wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
             lines += 1
 
+        if lines == 24:
+            wbk_embed.add_field(name = f'Essayez "U!wbk_list" pour plus de résultats', value = f'La recherche ne peut pas encore afficher plus de 24 résultats... \nEssayez "U!wbk_list" ou bien une recherche plus précise pour continuer', inline = False)
+            break
+
     wbk_embed = discord.Embed(title = f'{ctx.author.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
             
     await ctx.send(embed = wbk_embed)
@@ -162,16 +242,19 @@ async def slash_register(interaction : discord.Interaction, name : str, tag : st
 
 async def slash_webhooks_list(interaction : discord.Interaction):
     WBK_list = WBK.get_webhooks_list(interaction.user.id) if WBK.get_webhooks_list(interaction.user.id) else []
-    wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks' , color = 0x00ffff)
+    wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks - page 1' , color = 0x00ffff) if len(WBK_list) > 10 else discord.Embed(title = f'{interaction.user.name}\'s webhooks' , color = 0x00ffff)
     lines = 0
 
     for i in range(len(WBK_list)):
         wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
         lines += 1
 
+        if lines == 10:
+            break
+
     wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
 
-    await interaction.response.send_message(embed = wbk_embed)
+    await interaction.response.send_message(embed = wbk_embed, view = button_view()) if len(WBK_list) > 10 else await interaction.response.send_message(embed = wbk_embed)
 
 async def slash_unregister(interaction : discord.Interaction, name : str):
     WBK_list = WBK.get_webhooks_list(interaction.user.id)
@@ -214,6 +297,10 @@ async def slash_search(interaction : discord.Interaction, name : str):
         if name.lower() in WBK_list[i][1].lower():
             wbk_embed.add_field(name = f'{i + 1} - {WBK_list[i][1]}', value = f'**Tag -** {WBK_list[i][2]} \n**Date de création -** {WBK_list[i][4]}', inline = False)
             lines += 1
+
+        if lines == 24:
+            wbk_embed.add_field(name = f'Essayez "U!wbk_list" pour plus de résultats', value = f'La recherche ne peut pas encore afficher plus de 24 résultats... \nEssayez "U!wbk_list" ou bien une recherche plus précise pour continuer', inline = False)
+            break
 
     wbk_embed = discord.Embed(title = f'{interaction.user.name}\'s webhooks', description = 'Aucun webhook correspondant', color = 0x00ffff) if lines == 0 else wbk_embed
             

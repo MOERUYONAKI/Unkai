@@ -541,7 +541,7 @@ async def on_message(message): # réaction aux messages (fonctionnel)
     await bot.process_commands(message)
     await unkai_webhooks.check_message(message) # - Webhooks
 
-    list_words = ['hey', 'yo', 'yop', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 're', 'wesh', 'wsh', 'salam']
+    list_words = ['hey', 'heya', 'hello', 'yo', 'yop', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 'salute', 're', 'wesh', 'wsh', 'salam']
 
     if message.content.lower() in list_words:
         await message.add_reaction("👋")
@@ -555,7 +555,7 @@ async def on_message(message): # réaction aux messages (fonctionnel)
 
 @bot.event
 async def on_message_edit(before, after): # réaction aux messages (fonctionnel)
-    list_words = ['hey', 'yo', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 're', 'wesh', 'wsh', 'salam']
+    list_words = ['hey', 'heya', 'hello', 'yo', 'yop', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 'salute', 're', 'wesh', 'wsh', 'salam']
     Before = before.content.lower()
     After = after.content.lower()
 
