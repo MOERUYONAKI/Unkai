@@ -36,6 +36,10 @@ import UNKAI_commands.unkai_mod as unkai_mod
 import UNKAI_commands.unkai_lock as unkai_lock
 import UNKAI_commands.unkai_webhooks as unkai_webhooks
 
+# - JDR Moeru's Key
+
+import JDR_mk.main as mk_jdr
+
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
 
@@ -621,6 +625,10 @@ async def play(ctx : commands.Context, * , song_name : str = ''): # joue la musi
     else:
         await ctx.send(f'Nom invalide')
 
+@bot.command(name = 'jdr_start')
+async def jdr_start(ctx : commands.Context): # Crée un profil pour le jdr "Moeru's Key" (fonctionnel)
+    await mk_jdr.jdr_start(ctx)
+
 
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
 
@@ -635,4 +643,4 @@ bot.run(TOKEN)
 # > Actual version - 2 
 # > Uid - 1
 # > Creation - 2021/07 
-# > Total scripts - 11 
+# > Total scripts - 15 

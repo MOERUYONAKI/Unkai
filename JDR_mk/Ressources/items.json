@@ -1,0 +1,31 @@
+{
+    "armes" : [
+        "dague rouillée",
+        "dague en argent",
+        "grand coutelas",
+        "petite épée"
+    ],
+
+    "équipements" : [
+        "casque abimé",
+        "côte de mailles",
+        "gantelet usagé",
+        "vieilles jambières",
+        "vieux heaume"
+    ],
+
+    "consommables" : [
+        "potion de force",
+        "potion de mana",
+        "potion de soin",
+        "potion de soin avancée",
+        "viande sèche"
+    ],
+
+    "objets" : [
+        "or",
+        "osselet",
+        "peau",
+        "vieille rune"
+    ]
+}

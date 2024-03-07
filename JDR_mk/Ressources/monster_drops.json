@@ -1,0 +1,28 @@
+{
+    "level 1" : [
+        "casque abimé",
+        "dague rouillée",
+        "peau",
+        "petite épée",
+        "potion de mana",
+        "potion de soin"
+    ],
+
+    "level 2" : [
+        "casque abimé",
+        "dague rouillée",
+        "gantelet usagé",
+        "potion de mana",
+        "potion de soin"
+    ],
+
+    "level 3" : [
+        "dague rouillée", 
+        "gantelet usagé",
+        "peau",
+        "petite épée",
+        "potion de mana",
+        "potion de soin",
+        "potion de soin avancée"
+    ]
+}

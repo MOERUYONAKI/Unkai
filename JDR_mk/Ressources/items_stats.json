@@ -1,0 +1,71 @@
+{
+    "dague en argent" : {
+        "id" : "ArmPpl",
+        "atk" : 5
+    },
+
+    "dague rouillée" : {
+        "id" : "ArmPpl",
+        "atk" : 2
+    },
+
+    "grand coutelas" : {
+        "id" : "ArmPpl",
+        "atk" : 3
+    },
+
+    "petite épée" : {
+        "id" : "ArmPpl",
+        "atk" : 3
+    },
+
+    "casque abimé" : {
+        "id" : "ArrHd",
+        "dfs" : 1
+    },
+
+    "côte de mailles" : {
+        "id" : "ArrPpl",
+        "dfs" : 4
+    },
+    
+    "gantelet usagé" : {
+        "id" : "ArrBrs",
+        "dfs" : 2
+    },
+
+    "vieilles jambières" : {
+        "id" : "ArrJmb",
+        "dfs" : 2
+    },
+
+    "vieux heaume" : {
+        "id" : "ArrHd",
+        "dfs" : 2
+    },
+
+    "potion de force" : {
+        "id" : "Atk",
+        "atk" : 2
+    },
+
+    "potion de mana" : {
+        "id" : "Mana",
+        "mp" : 2
+    },
+
+    "potion de soin" : {
+        "id" : "Heal",
+        "hp" : 3
+    },
+
+    "potion de soin avancée" : {
+        "id" : "Heal",
+        "hp" : 5
+    },
+
+    "viande sèche" : {
+        "id" : "Heal",
+        "hp" : 1
+    }
+}
