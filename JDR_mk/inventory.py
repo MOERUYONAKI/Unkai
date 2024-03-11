@@ -9,7 +9,7 @@ from time import sleep
 import json
 
 def get_item_list():
-    with open('C:\\Users\\1bbor\\.vscode\\Dev\\GitHub\\Unkai\\JDR_mk\\Ressources\\items.json', encoding = 'utf-8') as itm_bk:
+    with open('C:\\Users\\1bbor\\.vscode\\Dev\\bot UNKAI\\JDR_mk\\Ressources\\items.json', encoding = 'utf-8') as itm_bk:
         items_bank = json.load(itm_bk)
 
     item_list = []
@@ -27,13 +27,13 @@ def get_item_list():
 
     return item_list
 
-with open('C:\\Users\\1bbor\\.vscode\\Dev\\GitHub\\Unkai\\JDR_mk\\Ressources\\items.json', encoding = 'utf-8') as itm_bk:
+with open('C:\\Users\\1bbor\\.vscode\\Dev\\bot UNKAI\\JDR_mk\\Ressources\\items.json', encoding = 'utf-8') as itm_bk:
     items_bank = json.load(itm_bk)
 
-with open('C:\\Users\\1bbor\\.vscode\\Dev\\GitHub\\Unkai\\JDR_mk\\Ressources\\monster_drops.json', encoding = 'utf-8') as mstr_dp:
+with open('C:\\Users\\1bbor\\.vscode\\Dev\\bot UNKAI\\JDR_mk\\Ressources\\monster_drops.json', encoding = 'utf-8') as mstr_dp:
     monsterdrop = json.load(mstr_dp)
 
-with open('C:\\Users\\1bbor\\.vscode\\Dev\\GitHub\\Unkai\\JDR_mk\\Ressources\\items_stats.json', encoding = 'utf-8') as itm_st:
+with open('C:\\Users\\1bbor\\.vscode\\Dev\\bot UNKAI\\JDR_mk\\Ressources\\items_stats.json', encoding = 'utf-8') as itm_st:
     items_stats = json.load(itm_st)
 
 item_list = get_item_list()
@@ -108,12 +108,12 @@ class Inventaire():
 # Personnage
 class Character():
     ''' Permet de créer un personnage et ses attributs '''
-    def __init__(self, name : str, inventory : Inventaire = Inventaire()):
+    def __init__(self, name : str, inventory : Inventaire = Inventaire(), equipement : tuple = (None, None, None, None, None, None)):
         self.name = name
         self.inventory = inventory
 
         # ArmPpl - arme principal, ArmSnd - arme secondaire, ArrPpl - armure principale, ArrBrs - armure bras, ArrHd - armure tête, ArrJmb - armure jambe
-        self.equipement = {'ArmPpl' : None, 'ArmSnd' : None, 'ArrPpl' : None, 'ArrBrs' : None, 'ArrHd' : None, 'ArrJmb' : None}
+        self.equipement = {'ArmPpl' : equipement[0], 'ArmSnd' : equipement[1], 'ArrPpl' : equipement[2], 'ArrBrs' : equipement[3], 'ArrHd' : equipement[4], 'ArrJmb' : equipement[5]}
 
         # Statistiques par défaut
         self.hp = 12

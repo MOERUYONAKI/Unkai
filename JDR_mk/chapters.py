@@ -1,36 +1,55 @@
 # - - - - - - - - - - -  I M P O R T S  - - - - - - - - - - - #
 
+from discord import *
+import discord 
+from discord.ext import commands
+from discord.ext.commands.bot import Bot
+from discord.ext.commands import has_permissions
+from discord.shard import EventType
+from discord import app_commands
+from nacl import *
 from time import sleep
 import random as rdm
 from .inventory import *
+from .mk_db import *
 
 
-# - - - - - - - - - - -  L A U N C H E R  - - - - - - - - - - - #
+# - - - - - - - - - - -  B U T T O N S  - - - - - - - - - - - #
 
-def presentation(ivtr : Inventaire, char : Character) :
-    sleep(1)
-    print("Narrateur : Depuis de nombreux siècles, la légendaire clé de Moeru a disparue")
-    sleep(2)
-    print("Nombre d'aventuriers en tout genre la cherche mais aucun n'a encore su la retrouver")
-    sleep(2)
-    nom = input("Comment t'appelles-tu, jeune aventurier ? ")
+class button_view(discord.ui.View): # Changement de page (wbk_list)
+    def __init__(self, Pid : int, inventory : Inventaire, character : Character):
+        super().__init__(timeout = None)
+        self.Pid = Pid
+        self.ivtr = inventory
+        self.char = character
+        self.player = Players()
+        
+    @discord.ui.button(label = "1", custom_id = "choice_1")
+    async def left(self, interaction : discord.Interaction, button : discord.ui.Button):
+        await interaction.message.edit(view = None)
+        await interaction.response.defer()
+        
+        if self.Pid == 0:
+            self.player.set_progression(interaction.user.id, (1, 1))
+            page_1(self.ivtr, self.char)
 
-    if nom.lower() == 'moeru' :
-        print(nom,"? C'est impossible !")
-        sleep(2.5)
-        print("Peut-être ce nom vous portera chance...")
-        sleep(0.5)
+    @discord.ui.button(label = "...", custom_id = "stop")
+    async def stop(self, interaction : discord.Interaction, button : discord.ui.Button):
+        await interaction.message.edit(view = None)
+        await interaction.response.send_message(f'> Session arrêtée, utilisez "**U!jdr_start**" pour reprendre...', ephemeral = True)
 
-    else :
-        print(nom,"? C'est un joli nom")
-        sleep(0.5)
+    @discord.ui.button(label = "2", custom_id = "choice_2")
+    async def reset(self, interaction : discord.Interaction, button : discord.ui.Button):
+        await interaction.message.edit(view = None)
+        await interaction.response.defer()
 
-    char.name = nom
-    départ(ivtr, char)
+        if self.Pid == 0:
+            self.player.set_progression(interaction.user.id, (1, 2))
+            page_2(self.ivtr, self.char)
 
 
 # - - - - - - - - - - -  P A G E S  - - - - - - - - - - - #
-
+        
 # Definition des pages
 def page_1(ivtr : Inventaire, char : Character) : # terminée
     sleep(3)
@@ -401,32 +420,10 @@ def page_21(ivtr : Inventaire, char : Character) :
     print("")
 
 # Début de l'aventure
-def départ(ivtr : Inventaire, char : Character):
-    sleep(1)
-    print('\n> - C H A P I T R E   1 - <')
-    sleep(2)
-    print("Narrateur : Vous arrivez donc dans une magnifique forêt, quoiqu'un peu sombre, puis le chemin se sépare en deux")
-    sleep(1)
-    print("1 - Continuer vers le nord \n2 - Continuer vers le sud")
-    D1 = int(input("Où allez-vous ? "))
-
-    if D1 == 1:
-        print("Narrateur : Vous avez choisi de continuer vers le nord")
-        page_1(ivtr, char)
-
-    elif D1 == 2:
-        print("Narrateur : Vous avez choisi de continuer vers le sud")
-        page_2(ivtr, char)
-
-    elif D1 == 0:
-        b = breaks(ivtr, char)
-
-        if b:
-            départ(ivtr, char)
-
-    else:
-        print("impossible")
-        départ(ivtr, char)
+async def départ(ctx : commands.Context, ivtr : Inventaire, char : Character):
+    embed = discord.Embed(title = '**CHAPITRE  1  -  DÉPART**', description = "> **Narrateur :** Vous arrivez donc dans une magnifique forêt, quoiqu'un peu sombre, puis le chemin se sépare en deux\n\n**1 -** Continuer vers le nord \n**2 -** Continuer vers le sud", color = 0x00ffff)
+    embed.set_author(name = ctx.message.author.name, icon_url = ctx.message.author.avatar)
+    await ctx.send(embed = embed, view = button_view(0, ivtr, char))
 
 # Fin de l'aventure
 def mort(ivtr : Inventaire, char : Character):
@@ -440,7 +437,7 @@ def mort(ivtr : Inventaire, char : Character):
         char.reset()
         print("Narrateur : Le temps s'estompe peu à peu... jusqu'à votre nouveau reveil\n")
         sleep(1)
-        presentation(ivtr, char)
+        départ(ivtr, char)
 
     elif M1 == 2:
         print("Narrateur : Le temps s'estompe peu à peu... et vous rejoignez lentement le monde des défunts")

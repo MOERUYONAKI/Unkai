@@ -32,6 +32,14 @@ def inventory_init(username : str, userid : int):
 # - Lancement de l'aventure
 async def jdr_start(ctx : commands.Context):
     inventaire = inventory_init(ctx.message.author.name, ctx.message.author.id)
-
     character = Character(ctx.message.author.name, inventaire)
-    # presentation(inventaire, character)
+    player = Players()
+    
+    if player.get_progression(ctx.message.author.id) == (1, 0):
+        await départ(ctx, inventaire, character)
+
+    elif player.get_progression(ctx.message.author.id) == (1, 1):
+        await page_1(ctx, inventaire, character)
+
+    elif player.get_progression(ctx.message.author.id) == (1, 2):
+        await page_2(ctx, inventaire, character)

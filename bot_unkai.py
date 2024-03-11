@@ -155,7 +155,7 @@ async def slash_ms(interaction : discord.Interaction): # mesure du ping (fonctio
 @bot.tree.command(name = 'info')
 async def infos(interaction : discord.Interaction): # About Unkai (non fonctionnel)
     info_embed = discord.Embed(title = 'À propos de Unkai - More about Unkai', description = '*En cours de création...* \n \n *In cours of creation...*', color = 0x00ffff)
-    info_embed.set_author(name = interaction.user.name, icon_url = interaction.user.avatar_url)
+    info_embed.set_author(name = interaction.user.name, icon_url = interaction.user.avatar)
 
     print(f'{interaction.user.name} veut en savoir plus sur Unkai !')
     await interaction.response.send_message(embed = info_embed)
@@ -620,13 +620,13 @@ async def play(ctx : commands.Context, * , song_name : str = ''): # joue la musi
     await channel.connect()
 
     if song_name.lower() == 'dead to me':
-        await play(discord.FFmpegPCMAudio(source = 'bot UNKAI\\songs\\Sex Whales & Fraxo - Dead to me.wav', executable = 'C:\\users\\1bbor\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.9_qbz5n2kfra8p0\\localcache\\local-packages\\python39\\site-packages\\ffmpeg'))
+        await play(FFmpegPCMAudio(source = 'bot UNKAI\\songs\\Sex Whales & Fraxo - Dead to me.wav', executable = 'C:\\users\\1bbor\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.9_qbz5n2kfra8p0\\localcache\\local-packages\\python39\\site-packages\\ffmpeg'))
     
     else:
         await ctx.send(f'Nom invalide')
 
 @bot.command(name = 'jdr_start')
-async def jdr_start(ctx : commands.Context): # Crée un profil pour le jdr "Moeru's Key" (fonctionnel)
+async def jdr_start(ctx : commands.Context): # Lance le jdr "Moeru's Key" (fonctionnel)
     await mk_jdr.jdr_start(ctx)
 
 

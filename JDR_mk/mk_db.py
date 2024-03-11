@@ -28,7 +28,7 @@ class Players():
             database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
             crs = database.cursor()
 
-            crs.execute(f'INSERT INTO users (`username`, `chapter_id`, `page_id`, `discord_id`) VALUES ("{username}", 1, 1, "{Uid}");')
+            crs.execute(f'INSERT INTO users (`username`, `chapter_id`, `page_id`, `discord_id`) VALUES ("{username}", 1, 0, "{Uid}");')
             database.close()
 
             return True
@@ -66,7 +66,7 @@ class Players():
             return DBid[0]
         
     def set_progression(self, userid : int, new_progression : tuple): # Modifie le chapitre et la page où le joueur s'est arrêté
-        if not self.user_is_register(userid) or type(new_progression) != 'tuple':
+        if not self.user_is_register(userid) or not type(new_progression) != 'tuple':
             return False
         
         else:
@@ -158,6 +158,182 @@ class Players():
                 return True
 
 
+    # - CHARACTERS
+            
+    def make_character(self, Uid : int):
+        userid = self.get_id_by_Uid(Uid)
+
+        if userid == False:
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'INSERT INTO `characters`(`user_id`) VALUES ("{userid}");')
+            database.close()
+
+            return True
+        
+    def char_is_register(self, Uid : int):
+        userid = self.get_id_by_Uid(Uid)
+
+        if userid == False:
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'SELECT ID FROM characters WHERE user_id = "{userid}";')
+            database.close()
+
+            return True if len(crs.fetchall()) > 0 else False
+        
+    def get_stats(self, Uid : int):
+        userid = self.get_id_by_Uid(Uid)
+
+        if userid == False:
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'SELECT hp, mp, atk, dfs FROM characters WHERE user_id = "{userid}";')
+            DBid = crs.fetchall()
+            database.close()
+
+            return DBid[0]
+        
+    def set_stats(self, Uid : int, new_stats : tuple):
+        userid = self.get_id_by_Uid(Uid)
+
+        if userid == False or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET hp = "{new_stats[0]}", mp = "{new_stats[1]}", atk = "{new_stats[2]}", dfs = "{new_stats[3]}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+
+    def get_equipement(self, Uid : int):
+        userid = self.get_id_by_Uid(Uid)
+
+        if userid == False:
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'SELECT ArmPpl_id, ArmSnd_id, ArrPpl_id, ArrBrs_id, ArrHd_id, ArrJmb_id FROM characters WHERE user_id = "{userid}";')
+            DBid = crs.fetchall()
+            database.close()
+
+            return DBid[0]
+        
+    def set_ArmPpl(self, Uid : int, item_name : str):
+        userid = self.get_id_by_Uid(Uid)
+        itemid = self.get_item_id(item_name)
+
+        if userid == False or itemid == False or not self.is_in_inventory(Uid, item_name) or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET ArmPpl_id = "{itemid}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+        
+    def set_ArmSnd(self, Uid : int, item_name : str):
+        userid = self.get_id_by_Uid(Uid)
+        itemid = self.get_item_id(item_name)
+
+        if userid == False or itemid == False or not self.is_in_inventory(Uid, item_name) or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET ArmSnd_id = "{itemid}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+        
+    def set_ArrPpl(self, Uid : int, item_name : str):
+        userid = self.get_id_by_Uid(Uid)
+        itemid = self.get_item_id(item_name)
+
+        if userid == False or itemid == False or not self.is_in_inventory(Uid, item_name) or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET ArrPpl_id = "{itemid}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+        
+    def set_ArrBrs(self, Uid : int, item_name : str):
+        userid = self.get_id_by_Uid(Uid)
+        itemid = self.get_item_id(item_name)
+
+        if userid == False or itemid == False or not self.is_in_inventory(Uid, item_name) or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET ArrBrs_id = "{itemid}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+        
+    def set_ArrHd(self, Uid : int, item_name : str):
+        userid = self.get_id_by_Uid(Uid)
+        itemid = self.get_item_id(item_name)
+
+        if userid == False or itemid == False or not self.is_in_inventory(Uid, item_name) or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET ArrHd_id = "{itemid}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+        
+    def set_ArrJmb(self, Uid : int, item_name : str):
+        userid = self.get_id_by_Uid(Uid)
+        itemid = self.get_item_id(item_name)
+
+        if userid == False or itemid == False or not self.is_in_inventory(Uid, item_name) or not self.char_is_register(Uid):
+            return False
+        
+        else:
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            crs = database.cursor()
+
+            crs.execute(f'UPDATE characters SET ArrJmb_id = "{itemid}" WHERE user_id = "{userid}";')
+            database.close()
+
+            return True
+
+
 # - TESTS 
 
 test = Players()
@@ -176,3 +352,11 @@ test = Players()
 #? is_in_inventory - validé
 #? get_quantity - validé
 #? add_items - validé
+
+# - Characters
+#? make_character - validé
+#? char_is_register - validé
+#? get_stats - validé
+#? set_stats - validé
+#? get_equipement - validé
+#? set_equipement(ArmPpl_id, ArmSnd_id, ArrPpl_id, ArrBrs_id, ArrHd_id, ArrJmb_id) - validé
