@@ -1,5 +1,17 @@
 <?php 
     session_start();
+
+    if (!isset($_SESSION['mode'])) {
+        $_SESSION['mode'] = 'light';
+    }
+
+    if (isset($_GET['light'])) {
+        $_SESSION['mode'] = 'light';
+    }
+
+    if (isset($_GET['dark'])) {
+        $_SESSION['mode'] = 'dark';
+    }
     
     if (isset($_POST["id"])) {
         $host = "localhost";
@@ -61,32 +73,34 @@
         <title> Unkai </title>
     </head>
     <body>
-        <div data-bs-theme="light" id="light-mode">
+        <div data-bs-theme="<?php echo($_SESSION['mode']) ?>" id="actMode">
+
+            <!-- Bar de navigation -->
             <nav class="navbar navbar-expand-lg bg-body-tertiary p-2">
                 <div class="container-fluid user-select-none">
                     <div class="mode-trigger">
-                        <a class="navbar-brand fw-bold" id="dark-mode-trigger" role="button">UNKAI</a>
+                        <a id="modeTrigger" class="navbar-brand fw-bold" role="button" tabindex=0 aria-description="Secret button to change the color mode (light or dark)">UNKAI</a>
                     </div>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link active" id="homeLink" aria-current="page" href="index.php?<?php echo($_SESSION['mode']) ?>">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Serveurs</a>
+                            <a class="nav-link" id="serversLink" href="servers.php?<?php echo($_SESSION['mode']) ?>">Serveurs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="documentation.php">Documentation</a>
+                            <a class="nav-link" id="docsLink" href="documentation.php?<?php echo($_SESSION['mode']) ?>">Documentation</a>
                         </li>
                         <li class="nav-item">
-                            <button type="button" id="lightToastTrigger" class="nav-link">Connexion</button>
+                            <button type="button" id="connectToastTrigger" class="nav-link">Connexion</button>
                         </li>
                     </ul>
                 </div>
-            </nav>
+            </nav> <!-- Bar de navigation -->
 
             <!-- Page de connexion -->
             <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div id="lightToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div id="connectToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
                         <img src="assets\unkai_discord_picture.png" class="rounded me-2" alt="Unkai profil picture" width="24" height="24">
                         <strong class="me-auto">Connexion</strong>
@@ -96,7 +110,7 @@
                     <div class="toast-body">
                         <form action="index.php" method="post" class="list-group p-2">
                             <div class="input-group mb-2">
-                                <span class="input-group-text" id="basic-addon1">@</span>
+                                <span class="input-group-text" id="username-addon">@</span>
                                 <div class="form-floating">
                                     <input type="text" id="floatingUsername" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
                                     <label for="floatingUsername" style="color: grey;">Username</label>
@@ -119,69 +133,12 @@
                         </form>
                     </div>
                 </div>
-            </div> 
-        </div>
-        
-        <div data-bs-theme="dark" id="dark-mode" style="display: none;">
-            <nav class="navbar navbar-expand-lg bg-body-tertiary p-2">
-                <div class="container-fluid user-select-none">
-                    <div class="mode-trigger">
-                        <a class="navbar-brand fw-bold" id="light-mode-trigger" role="button">UNKAI</a>
-                    </div>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Serveurs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="documentation.php">Documentation</a>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" id="darkToastTrigger" class="nav-link">Connexion</button>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            </div> <!-- Page de connexion -->
 
-            <!-- Page de connexion -->
-            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div id="darkToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <img src="assets\unkai_discord_picture.png" class="rounded me-2" alt="Unkai profil picture" width="24" height="24">
-                        <strong class="me-auto">Connexion</strong>
-                        <small>Powered by Unkai</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        <form action="index.php" method="post" class="list-group p-2">
-                            <div class="input-group mb-2">
-                                <span class="input-group-text" id="basic-addon1">@</span>
-                                <div class="form-floating">
-                                    <input type="text" id="floatingUsername" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
-                                    <label for="floatingUsername" style="color: grey;">Username</label>
-                                </div>
-                            </div>
-                            <div class="input-group mb-2">
-                                <div class="form-floating">
-                                    <input type="password" id="floatingPassword" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
-                                    <label for="floatingPassword" style="color: grey;">Password</label>
-                                </div>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                                <label class="form-check-label" for="autoSizingCheck" style="color: lightgrey;">Remember me</label>
-                            </div>
-                            <ul class="list-group list-group-horizontal">
-                                <input type="submit" value="Sign in" class="list-group-item list-group-item-action">
-                                <input type="submit" value="Sign up" class="list-group-item list-group-item-action">
-                            </ul>
-                        </form>
-                    </div>
-                </div>
-            </div> 
         </div>
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
         <!-- <p> <?php // if (isset($result)) { echo($result); } ?> </p> -->
 
