@@ -18,8 +18,14 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 async def clear(ctx, nombre : int = 1) : # suppression de messages (fonctionnel)
     print('Suppression en cours')
+    adv = ''
+
     if nombre <= 0:
         nombre = 1
+
+    elif nombre > 5:
+        adv = '> *En raison des préventions contre le spam de Discord, la commande \"**U!clear**\" est désormais limitée à **5** messages...*'
+        nombre = 5
         
     msgs = -1
     async for message in ctx.channel.history(limit = nombre + 1):
@@ -28,14 +34,14 @@ async def clear(ctx, nombre : int = 1) : # suppression de messages (fonctionnel)
     
     if msgs == 0 or msgs == 1:
         print(msgs,'message supprimé')
-        msg = await ctx.send(f'{msgs} message supprimé')
-        sleep(1.5)
+        msg = await ctx.send(f'{msgs} message supprimé \n \n{adv}')
+        sleep(2)
         await msg.delete()
     
     else:
         print(msgs, 'messages supprimés')
-        msg = await ctx.send(f'{msgs} messages supprimés')
-        sleep(1.5)
+        msg = await ctx.send(f'{msgs} messages supprimés \n \n{adv}')
+        sleep(2)
         await msg.delete()
 
 
@@ -43,8 +49,14 @@ async def clear(ctx, nombre : int = 1) : # suppression de messages (fonctionnel)
 
 async def slash_clear(interaction : discord.Interaction, nombre : int = 1) : # suppression de messages (fonctionnel)
     print('Suppression en cours')
+    adv = ''
+
     if nombre <= 0:
         nombre = 1
+
+    elif nombre > 5:
+        adv = '> *En raison des préventions contre le spam de Discord, la commande \"**U!clear**\" est désormais limitée à **5** messages...*'
+        nombre = 5
         
     msgs = 0
     async for message in interaction.channel.history(limit = nombre):
@@ -53,12 +65,8 @@ async def slash_clear(interaction : discord.Interaction, nombre : int = 1) : # s
     
     if msgs == 0 or msgs == 1:
         print(msgs,'message supprimé')
-        msg = await interaction.response.send_message(f'{msgs} message supprimé')
-        sleep(1.5)
-        await interaction.delete_original_response()
+        await interaction.response.send_message(f'{msgs} message supprimé \n \n{adv}', ephemeral = True, delete_after = 2)
     
     else:
         print(msgs, 'messages supprimés')
-        msg = await interaction.response.send_message(f'{msgs} messages supprimés')
-        sleep(1.5)
-        await interaction.delete_original_response()
+        await interaction.response.send_message(f'{msgs} messages supprimés \n \n{adv}', ephemeral = True, delete_after = 2)
