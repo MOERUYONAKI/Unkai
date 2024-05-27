@@ -15,9 +15,9 @@
     
     if (isset($_POST["id"])) {
         $host = "localhost";
-        $dbname = "hesias";
-        $user = "root";
-        $pass = "";
+        $dbname = "XXX";
+        $user = "unkai";
+        $pass = "XXX";
         $charset = "utf8mb4";
         $dsn = "mysql:host=$host;port=3307;dbname=$dbname;charset=$charset";
     
@@ -86,10 +86,10 @@
                             <a class="nav-link active" id="homeLink" aria-current="page" href="index.php?<?php echo($_SESSION['mode']) ?>">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="serversLink" href="servers.php?<?php echo($_SESSION['mode']) ?>">Serveurs</a>
+                            <a class="nav-link" id="serversLink" href="servers/index.php?<?php echo($_SESSION['mode']) ?>">Serveurs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="docsLink" href="documentation.php?<?php echo($_SESSION['mode']) ?>">Documentation</a>
+                            <a class="nav-link" id="docsLink" href="docs/index.php?<?php echo($_SESSION['mode']) ?>">Documentation</a>
                         </li>
                         <li class="nav-item">
                             <button type="button" id="connectToastTrigger" class="nav-link">Connexion</button>
@@ -97,6 +97,13 @@
                     </ul>
                 </div>
             </nav> <!-- Bar de navigation -->
+
+            <!-- Page d'acceuil -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3" id="acceuil">
+                
+            </div> <!-- Page d'acceuil' -->
+
+            <!-- <img src="assets/space_bg.jpg" class="mx-auto" alt="Photo de Frank Cone : https://www.pexels.com/fr-fr/photo/nuit-espace-galaxy-galaxie-6508135/" style="height : 100vh;"> -->
 
             <!-- Page de connexion -->
             <div class="toast-container position-fixed bottom-0 end-0 p-3">

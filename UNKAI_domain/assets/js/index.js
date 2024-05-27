@@ -16,13 +16,13 @@ if (modeTrigger) {
         if (actMode.getAttribute('data-bs-theme') == 'light') {
             actMode.setAttribute('data-bs-theme', 'dark');
             homeLink.setAttribute('href', 'index.php?dark');
-            serversLink.setAttribute('href', 'servers.php?dark');
-            docsLink.setAttribute('href', 'documentation.php?dark');
+            serversLink.setAttribute('href', 'servers/index.php?dark');
+            docsLink.setAttribute('href', 'docs/index.php?dark');
         } else {
             actMode.setAttribute('data-bs-theme', 'light');
             homeLink.setAttribute('href', 'index.php?light');
-            serversLink.setAttribute('href', 'servers.php?light');
-            docsLink.setAttribute('href', 'documentation.php?light');
+            serversLink.setAttribute('href', 'servers/index.php?light');
+            docsLink.setAttribute('href', 'docs/index.php?light');
         }
         console.log(1);
     })
@@ -36,4 +36,3 @@ if (connectToastTrigger) {
         console.log(1);
     })
 }
-  

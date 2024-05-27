@@ -570,8 +570,8 @@ async def katsu_roll(ctx, msg):
 
 
 # Sécurisation du Token 
-from unkai_tk import TOKENS
-bot.run(TOKENS)
+from XXX import TOKEN
+bot.run(TOKEN)
 
 
 # - - - - - - - - - - - - - - - -  I N F O R M A T I O N S  - - - - - - - - - - - - - - - - #

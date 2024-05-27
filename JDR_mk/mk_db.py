@@ -2,7 +2,7 @@ import mariadb
 
 class Players():
     def __init__(self):
-        self.database = 'unkai_jdr'
+        self.database = 'XXX'
 
 
     # - USERS
@@ -10,7 +10,7 @@ class Players():
     def user_is_register(self, userid : int): # Vérifie si un utilisateur est enregistré par son ID discord
         Uid = f'Uid{userid}'
 
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
         crs = database.cursor()
 
         crs.execute(f'SELECT ID FROM users WHERE discord_id = "{Uid}";')
@@ -25,7 +25,7 @@ class Players():
         else:
             Uid = f'Uid{userid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'INSERT INTO users (`username`, `chapter_id`, `page_id`, `discord_id`) VALUES ("{username}", 1, 0, "{Uid}");')
@@ -40,7 +40,7 @@ class Players():
         else:
             Uid = f'Uid{userid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT ID FROM users WHERE discord_id = "{Uid}";')
@@ -56,7 +56,7 @@ class Players():
         else:
             Uid = f'Uid{userid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT chapter_id, page_id FROM users WHERE discord_id = "{Uid}";')
@@ -72,7 +72,7 @@ class Players():
         else:
             Uid = f'Uid{userid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE `users` SET `chapter_id` = "{new_progression[0]}", `page_id` = "{new_progression[1]}" WHERE discord_id = "{Uid}";')
@@ -84,7 +84,7 @@ class Players():
     # - ITEMS
 
     def get_item_id(self, item_name : str): # Renvoie l'ID de l'item s'il existe
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
         crs = database.cursor()
 
         crs.execute(f'SELECT ID FROM items WHERE itemname = "{item_name}";')
@@ -108,7 +108,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT * FROM inventory WHERE item_id = "{itemid}" AND user_id = "{userid}";')
@@ -124,7 +124,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT quantity FROM inventory WHERE item_id = "{itemid}" AND user_id = "{userid}";')
@@ -142,7 +142,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             if self.is_in_inventory(Uid, item_name):
@@ -167,7 +167,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'INSERT INTO `characters`(`user_id`) VALUES ("{userid}");')
@@ -182,7 +182,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT ID FROM characters WHERE user_id = "{userid}";')
@@ -197,7 +197,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT hp, mp, atk, dfs FROM characters WHERE user_id = "{userid}";')
@@ -213,7 +213,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET hp = "{new_stats[0]}", mp = "{new_stats[1]}", atk = "{new_stats[2]}", dfs = "{new_stats[3]}" WHERE user_id = "{userid}";')
@@ -228,7 +228,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT ArmPpl_id, ArmSnd_id, ArrPpl_id, ArrBrs_id, ArrHd_id, ArrJmb_id FROM characters WHERE user_id = "{userid}";')
@@ -245,7 +245,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET ArmPpl_id = "{itemid}" WHERE user_id = "{userid}";')
@@ -261,7 +261,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET ArmSnd_id = "{itemid}" WHERE user_id = "{userid}";')
@@ -277,7 +277,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET ArrPpl_id = "{itemid}" WHERE user_id = "{userid}";')
@@ -293,7 +293,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET ArrBrs_id = "{itemid}" WHERE user_id = "{userid}";')
@@ -309,7 +309,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET ArrHd_id = "{itemid}" WHERE user_id = "{userid}";')
@@ -325,7 +325,7 @@ class Players():
             return False
         
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "XXX", database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE characters SET ArrJmb_id = "{itemid}" WHERE user_id = "{userid}";')
