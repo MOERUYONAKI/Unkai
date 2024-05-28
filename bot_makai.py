@@ -721,8 +721,8 @@ async def on_member_remove(member) : # adieu (fonctionnel)
 
 
 # Sécurisation du Token 
-from unkai_tk import TOKENS
-bot.run(TOKENS)
+from XXX import TOKEN
+bot.run(TOKEN)
 
 
 # - - - - - - - - - - - - - - - -  I N F O R M A T I O N S  - - - - - - - - - - - - - - - - #

@@ -634,7 +634,7 @@ async def jdr_start(ctx : commands.Context): # Lance le jdr "Moeru's Key" (fonct
 
 
 # Sécurisation du Token 
-from unkai_tk import TOKEN
+from XXX import TOKEN
 bot.run(TOKEN)
 
 
