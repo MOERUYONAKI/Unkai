@@ -17,7 +17,7 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 # base command
 
-async def joke(ctx):
+async def joke(ctx : commands.Context):
     joke_id = randint(1,7)
 
     if joke_id == 1:

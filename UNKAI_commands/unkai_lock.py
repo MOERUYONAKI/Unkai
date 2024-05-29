@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 # base commands
 
-async def lock(ctx, serveurs : list):
+async def lock(ctx : commands.Context, serveurs : list):
     for serveur in serveurs:
         if serveur.id == ctx.guild.id:
 
@@ -28,7 +28,7 @@ async def lock(ctx, serveurs : list):
             else:
                 await ctx.send(f'Ce serveur est déjà verrouillé')
 
-async def unlock(ctx, serveurs : list):
+async def unlock(ctx : commands.Context, serveurs : list):
     for serveur in serveurs:
         if serveur.id == ctx.guild.id:
 

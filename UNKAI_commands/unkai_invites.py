@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 # base command
 
-async def link(ctx, site : str):
+async def link(ctx : commands.Context, site : str):
     site = site.lower()
     
     if site == 'trello':

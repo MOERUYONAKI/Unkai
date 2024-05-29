@@ -239,7 +239,7 @@ def weather(climate_id : int, season_id : int, temp : float):
 
 # base command
 
-async def meteo(ctx, nom : str, climat : int, saison : int, durée : int, last_temp : float):
+async def meteo(ctx : commands.Context, nom : str, climat : int, saison : int, durée : int, last_temp : float):
     meteo_embed = discord.Embed(title = nom, color = 0x00ffff)
     bornes_temperatures = temperature(climat, saison)
     temp = last_temp

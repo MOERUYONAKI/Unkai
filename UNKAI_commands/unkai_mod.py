@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 # base command
 
-async def kick(ctx, member : discord.Member, reason : str, id : int):
+async def kick(ctx : commands.Context, member : discord.Member, reason : str, id : int):
     reasonkick = f'**Raison :** {reason}'
 
     if id == 1:

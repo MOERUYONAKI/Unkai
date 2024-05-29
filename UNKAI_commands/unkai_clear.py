@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 # base command
 
-async def clear(ctx, nombre : int = 1) : # suppression de messages (fonctionnel)
+async def clear(ctx : commands.Context, nombre : int = 1) : # suppression de messages (fonctionnel)
     print('Suppression en cours')
     adv = ''
 

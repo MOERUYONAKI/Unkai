@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents 
 
 # base command
 
-async def help(ctx, catégorie : str = 'all'): # aides : liste des commandes (fonctionnel)
+async def help(ctx : commands.Context, catégorie : str = 'all'): # aides : liste des commandes (fonctionnel)
     if catégorie == 'all':
         embed = discord.Embed(title = 'Commandes :', color = 0x00ffff)
         embed.add_field(name = "> **ms**", value = "Mesure du ping", inline = False)
