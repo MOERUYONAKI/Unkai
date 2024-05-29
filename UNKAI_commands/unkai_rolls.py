@@ -44,8 +44,9 @@ async def roll(ctx : commands.Context, faces : int = 6, nombre : int = 1):
         rolled.append(temp)
         total += temp
 
-    if faces > 2:
-        moyenne = int(round(total / len(rolled), 0))
+    moyenne = int(round(total / len(rolled), 0))
+
+    if faces > 2 and nombre > 1:
         
         for elt in rolled:
             if elt == 1:
@@ -56,11 +57,11 @@ async def roll(ctx : commands.Context, faces : int = 6, nombre : int = 1):
 
             rolled = str(rolled)
 
-        await ctx.send(f'> {rolled[1:-1]}\n{a} échecs critiques - {b} réussites critiques - moyenne : {moyenne}')
+        await ctx.send(f'```# {rolled[1:-1]}\n{a} échecs critiques - {b} réussites critiques - moyenne : {moyenne}```')
 
     else:
         rolled = str(rolled)
-        await ctx.send(f'> {rolled[1:-1]}')
+        await ctx.send(f'> {rolled[1:-1]} \n{f"> Majorité - {moyenne}" if nombre > 4 else ""}')
 
 async def makai_roll(ctx : commands.Context, bonus : int, nombre : app_commands.Choice[int]):
     roll = []
@@ -160,7 +161,7 @@ async def slash_roll(interaction : discord.Interaction, faces : int = 6, nombre 
         rolled.append(temp)
         total += temp
 
-    if faces > 2:
+    if faces > 2 and nombre > 1:
         moyenne = int(round(total / len(rolled), 0))
 
         for elt in rolled:
@@ -172,11 +173,11 @@ async def slash_roll(interaction : discord.Interaction, faces : int = 6, nombre 
 
             rolled = str(rolled)
 
-        await interaction.response.send_message(f'> {rolled[1:-1]}\n{a} échecs critiques - {b} réussites critiques - moyenne : {moyenne}')
+        await interaction.response.send_message(f'```# {rolled[1:-1]}\n{a} échecs critiques - {b} réussites critiques - moyenne : {moyenne}```')
 
     else:
         rolled = str(rolled)
-        await interaction.response.send_message(f'> {rolled[1:-1]}')
+        await interaction.response.send_message(f'> {rolled[1:-1]} \n{f"> Majorité - {moyenne}" if nombre > 4 else ""}')
 
 async def slash_makai_roll(interaction : discord.Interaction, bonus : int, nombre : app_commands.Choice[int]):
     roll = []
