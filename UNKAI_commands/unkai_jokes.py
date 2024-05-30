@@ -14,14 +14,17 @@ intents.members = True
 
 bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents = intents)
 
-jokes = {
+jokes = { # - Nombre de "blagues" : 10
     'Quel animal a trois bosses ?' : 'Un chameau qui s’est cogné',
     'Qu’est-ce qu’une manifestation d’aveugles ?' : 'Le festival de Cannes',
     'Que dit une orange à une pomme ?' : 'Rien, les fruits ne parlent pas',
     'Pourquoi les sorcières volent sur des balais ?' : 'Parce que les aspirateurs font trop de bruit',
     'Quel est le pays le plus cool du monde ?' : 'Le Yémen. Yeah man',
     'Qu\'est ce qui a 13 cœurs mais aucun autre organe ?' : 'Un jeu de cartes',
-    'Que prend un éléphant dans un bar ?' : 'Beaucoup de place'
+    'Que prend un éléphant dans un bar ?' : 'Beaucoup de place',
+    'Qu\'est ce qui a 118 yeux et 7 dents ?' : 'Un autobus rempli de personnes âgées',
+    'Comment on appelle un avion qui rebondit ?' : 'Un Boing',
+    'Quel est l\'animal qui a le plus de dents ?' : 'La petite souris'
 }
 
 
