@@ -1,0 +1,26 @@
+{
+    "electro" : [
+        {
+            "path": "Blind_test\\songs\\Artists - Title.mp3",
+            "title": "Title",
+            "artists": [
+                "Artist"
+            ]
+        }
+    ],
+    "rock" : [
+        
+    ],
+    "pop" : [
+
+    ],
+    "rap" : [
+
+    ],
+    "classique" : [
+
+    ],
+    "anime" : [
+
+    ]
+}

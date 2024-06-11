@@ -34,6 +34,7 @@ import UNKAI_commands.unkai_jokes as unkai_jokes
 import UNKAI_commands.unkai_meteo as unkai_meteo
 import UNKAI_commands.unkai_mod as unkai_mod
 import UNKAI_commands.unkai_lock as unkai_lock
+import UNKAI_commands.unkai_music as unkai_music
 import UNKAI_commands.unkai_webhooks as unkai_webhooks
 
 # - JDR Moeru's Key
@@ -337,6 +338,42 @@ async def unlock(interaction) : # Désactivation anti-raid (fonctionnel)
     await unkai_lock.slash_unlock(interaction, serveurs)
 
 
+# MUSIC - last update = v2
+
+@bot.command(name = 'play')
+async def play(ctx : commands.Context, title : str, artist : str = None): # joue la musique demandée dans un salon vocal (fonctionnel)
+    await unkai_music.play(ctx, title, artist)
+
+@bot.tree.command(name = 'play')
+async def slash_play(interaction : discord.Interaction, title : str, artist : str = None): # joue la musique demandée dans un salon vocal (fonctionnel)
+    await unkai_music.slash_play(interaction, title, artist)
+
+@bot.command(name = 'queue')
+async def queue(ctx : commands.Context): # passe à la musique suivante (fonctionnel)
+    await unkai_music.queue(ctx)
+
+@bot.tree.command(name = 'queue')
+async def slash_queue(interaction : discord.Interaction): # passe à la musique suivante (fonctionnel)
+    await unkai_music.slash_queue(interaction)
+
+@bot.command(name = 'skip')
+async def skip(ctx : commands.Context): # passe à la musique suivante (fonctionnel)
+    await unkai_music.skip(ctx)
+  
+@bot.tree.command(name = 'skip')
+async def slash_skip(interaction : discord.Interaction): # passe à la musique suivante (fonctionnel)
+    await unkai_music.slash_skip(interaction)
+    
+@bot.command(name = 'stop')
+async def stop(ctx : commands.Context): # arrête la musique et quitte le salon vocal (fonctionnel)
+    await unkai_music.stop(ctx)
+
+@bot.tree.command(name = 'stop')
+async def slash_stop(interaction : discord.Interaction): # arrête la musique et quitte le salon vocal (fonctionnel)
+    await unkai_music.slash_stop(interaction)
+
+
+
 # WEBHOOKS - last update = v2
 
 @bot.command(name = "wbk_create")
@@ -553,4 +590,4 @@ bot.run(TOKEN)
 # > Actual version - 2 
 # > Uid - 1
 # > Creation - 2021/07 
-# > Total scripts - 15 
+# > Total scripts - 20 
