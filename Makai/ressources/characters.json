@@ -1,0 +1,31 @@
+{
+    "Uid{id discord de l'utilisateur}": {
+        "Nom du personnage": "Prenom Nom",
+        "Faction": "humain / ghoul",
+        "rang": "F, E , D, ... , S",
+        "elements": [
+            "Nom de l'element 1",
+            "..."
+        ],
+        "statistiques": {
+            "Force": 0,
+            "Defense": 0,
+            "Agilite": 0,
+            "Perception": 0,
+            "Magie": 0,
+            "Points de vie": "int(20 + 5 * rang -> [F = 0, E = 1, ...])",
+            "Sante mentale": 10,
+            "Chance": 1
+        },
+        "points": {
+            "Plausibilite": 0,
+            "Evolution": 0,
+            "Eveil": 0,
+            "Argent": 50
+        },
+        "inventaire": [
+            "Nom de l'item 1",
+            "..."
+        ]
+    }
+}
