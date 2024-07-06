@@ -30,6 +30,7 @@ import UNKAI_commands.unkai_jokes as unkai_jokes
 import UNKAI_commands.unkai_meteo as unkai_meteo
 import UNKAI_commands.unkai_mod as unkai_mod
 import UNKAI_commands.unkai_lock as unkai_lock
+import UNKAI_commands.unkai_webhooks as unkai_webhooks
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -45,6 +46,8 @@ embed = discord.Embed(title = "title", description = "description", color = 0x00
 embed.add_field(name = "field", value = "value", inline = False)
 
 bot.remove_command('help')
+
+localhost = False
 
 serveurs = []
 
@@ -301,6 +304,83 @@ async def unlock(interaction) :
     await unkai_lock.slash_unlock(interaction, serveurs)
 
 
+# WEBHOOKS
+
+@bot.command(name = "wbk_create")
+async def create_wbk(ctx : commands.Context, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (fonctionnel)
+    avatar = None
+
+    if ctx.message.attachments != []:
+        await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
+
+        channel = bot.get_channel(1206621721541484607)
+        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
+        avatar = image.attachments[0].url
+
+        os.remove("bot UNKAI\\temp_file.png")
+
+    await unkai_webhooks.register(ctx, nom, tag, avatar)
+
+@bot.tree.command(name = "wbk_create")
+async def slash_create_wbk(interaction : discord.Interaction, nom : str, tag : str): # Enregistrement d'un webhook dans la DB (sans avatar / fonctionnel)
+    await unkai_webhooks.slash_register(interaction, nom, tag)
+
+@bot.command(name = "wbk_list")
+async def wbk_list(ctx : commands.Context):
+    await unkai_webhooks.webhooks_list(ctx)
+
+@bot.tree.command(name = "wbk_list")
+async def slash_wbk_list(interaction : discord.Interaction): # Liste les webhooks d'un compte (fonctionnel)
+    await unkai_webhooks.slash_webhooks_list(interaction)
+
+@bot.command(name = "wbk_del")
+async def del_wbk(ctx : commands.Context, name : str):
+    await unkai_webhooks.unregister(ctx, name)
+
+@bot.tree.command(name = "wbk_del")
+async def slash_del_wbk(interaction : discord.Interaction, name : str): # Suppression d'un webhook (fonctionnel)
+    await unkai_webhooks.slash_unregister(interaction, name)
+
+@bot.command(name = "wbk_avatar")
+async def edit_wbk_avatar(ctx : commands.Context, name : str): # Modification de l'avatar (fonctionnel / no slash command)
+    if ctx.message.attachments != []:
+        await ctx.message.attachments[0].save("bot UNKAI\\temp_file.png")
+
+        channel = bot.get_channel(1206621721541484607)
+        image = await channel.send(file = discord.File("bot UNKAI\\temp_file.png"))
+        avatar = image.attachments[0].url
+
+        os.remove("bot UNKAI\\temp_file.png")
+        await unkai_webhooks.avatar_edit(ctx, name, avatar)
+
+    else:
+        await ctx.send("Une image est nécessaire pour modifier l'avatar...")
+
+@bot.command(name = "wbk_rename")
+async def edit_wbk_name(ctx : commands.Context, name : str, new_name : str):
+    await unkai_webhooks.name_edit(ctx, name, new_name)
+
+@bot.tree.command(name = "wbk_rename")
+async def slash_edit_wbk_name(interaction : discord.Interaction, name : str, new_name : str): # Modification du nom (fonctionnel)
+    await unkai_webhooks.slash_name_edit(interaction, name, new_name)
+
+@bot.command(name = "wbk_tag")
+async def edit_wbk_name(ctx : commands.Context, name : str, new_tag : str):
+    await unkai_webhooks.tag_edit(ctx, name, new_tag)
+
+@bot.tree.command(name = "wbk_tag")
+async def slash_edit_wbk_name(interaction : discord.Interaction, name : str, new_tag : str): # Modification du tag (fonctionnel)
+    await unkai_webhooks.slash_tag_edit(interaction, name, new_tag)
+
+@bot.command(name = "wbk_search")
+async def search_wbk(ctx : commands.Context, name : str):
+    await unkai_webhooks.search(ctx, name)
+
+@bot.tree.command(name = "wbk_search")
+async def slash_search_wbk(interaction : discord.Interaction, name : str): # Liste les webhooks correspondants (fonctionnel)
+    await unkai_webhooks.slash_search(interaction, name)
+
+
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
 
 
@@ -318,6 +398,10 @@ async def on_ready():
 @bot.event
 async def on_message(message): # réaction aux messages (fonctionnel)
     await bot.process_commands(message)
+    global localhost
+
+    if localhost:
+        await unkai_webhooks.check_message(message) # - Webhooks
     
     list_words = ['hey', 'heya', 'hello', 'yo', 'yop', 'coucou', 'cc', 'bonjour', 'bjr', 'bonsoir', 'bsr', 'salutation', 'salutations', 'salut', 'slt', 'salute', 're', 'wesh', 'wsh', 'salam']
 
