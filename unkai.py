@@ -175,6 +175,33 @@ async def slash_blague(interaction : discord.Interaction):
     await unkai_jokes.slash_joke(interaction)
 
 
+# NARRATION - narration (fonctionnel / v1)
+
+@bot.command(name = 'nar') 
+async def narration(ctx : commands.Context, * , nar): 
+    if len(nar) < 100:
+        print(f'Envois du message : {nar}')
+
+    else:
+        msg = nar[0:100]
+        print(f'Envois du message : {msg} ...')
+
+    await ctx.message.delete()    
+    await ctx.send(nar)
+
+@bot.command(name = 'e_nar')
+async def embed_narration(ctx : commands.Context, titre,  * , nar): 
+    if len(nar) < 100:
+        print(f'Envois du message : {nar} (embed)')
+
+    else:
+        msg = nar[0:100]
+        print(f'Envois du message : {msg} ... (embed)')
+
+    await ctx.message.delete()    
+    await ctx.send(embed = discord.Embed(title = titre, description = nar, color=0x00ffff))
+
+
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
 
 
