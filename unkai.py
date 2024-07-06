@@ -28,6 +28,7 @@ import UNKAI_commands.unkai_clear as unkai_clear
 import UNKAI_commands.unkai_rolls as unkai_rolls
 import UNKAI_commands.unkai_jokes as unkai_jokes
 import UNKAI_commands.unkai_meteo as unkai_meteo
+import UNKAI_commands.unkai_mod as unkai_mod
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -214,6 +215,48 @@ async def meteo(ctx : commands.Context, nom : str, climat : int, saison : int, d
 @app_commands.checks.has_permissions(administrator = True)
 async def slash_meteo(interaction : discord.Interaction, nom : str, climat : int, saison : int, durée : int, dernière_température : float = None) : # météo avec températures (fonctionnel)
     await unkai_meteo.slash_meteo(interaction, nom, climat, saison, durée, dernière_température)
+
+
+# MODERATION - last update = v2
+
+@bot.command(name = 'kick')
+@has_permissions(kick_members = True)
+async def kick(ctx : commands.Context, member : discord.Member, * , reason = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
+    await unkai_mod.kick(ctx, member, reason, 1)
+
+@bot.command(name = 'ban')
+@has_permissions(ban_members = True)
+async def ban(ctx : commands.Context, member : discord.Member, * , reason = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
+    await unkai_mod.kick(ctx, member, reason, 2)
+
+@bot.tree.command(name = 'kick')
+@app_commands.checks.has_permissions(kick_members = True)
+async def slash_kick(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # kick un membre (fonctionnel)
+    await unkai_mod.slash_kick(interaction, membre, raison, 1)
+
+@bot.tree.command(name = 'ban')
+@app_commands.checks.has_permissions(ban_members = True)
+async def slash_ban(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : # ban un membre (fonctionnel)
+    await unkai_mod.slash_kick(interaction, membre, raison, 2)
+
+@bot.command(name = 'kick_role')
+@has_permissions(administrator = True)
+async def kick_role(ctx, role : discord.Role, * , reason = 'aucune raison spécifiée') : # kick tout les membres possédant le rôle demandé (fonctionnel)
+    namekick = f'Les membres possédant le rôle "{role}" ont été expulsés du serveur'
+    reasonkick = f'**Raison :** {reason}'
+
+    for membre in ctx.guild.members:
+        if role in membre.roles:
+
+            try:
+                await membre.send(embed=discord.Embed(title = 'Vous avez été expulsé du serveur', description = reasonkick, color = 0x00ffff))
+            
+            except:
+                pass
+
+            await ctx.guild.kick(membre, reason = reason)
+
+    await ctx.send(embed=discord.Embed(title = namekick, description = reasonkick, color = 0x00ffff))
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
