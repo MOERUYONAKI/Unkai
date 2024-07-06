@@ -23,6 +23,7 @@ from time import sleep
 # - UNKAI commands
 
 import UNKAI_commands.unkai_help as unkai_help
+import UNKAI_commands.unkai_invites as unkai_invites
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -87,6 +88,40 @@ async def help(ctx : commands.Context, catégorie : str = 'all'):
     app_commands.Choice(name = "Webhooks", value = "webhooks")])
 async def slash_help(interaction : discord.Interaction, catégorie : app_commands.Choice[str] = None): 
     await unkai_help.slash_help(interaction, catégorie.value if catégorie != None else 'all')
+    
+    
+# INFOS - about Unkai (non fonctionnel) / invitations serveurs (fonctionnel)
+
+@bot.tree.command(name = 'info')
+async def infos(interaction : discord.Interaction): 
+    info_embed = discord.Embed(title = 'À propos de Unkai - More about Unkai', description = '*En cours de création...* \n \n *In cours of creation...*', color = 0x00ffff)
+    info_embed.set_author(name = interaction.user.name, icon_url = interaction.user.avatar)
+
+    print(f'{interaction.user.name} veut en savoir plus sur Unkai !')
+    await interaction.response.send_message(embed = info_embed)
+
+@bot.command(name = 'link')
+async def link(ctx : commands.Context, site : str):
+    await unkai_invites.link(ctx, site)
+
+@bot.command(name = 'invite')
+async def invitations(ctx : commands.Context, site : str):
+    await unkai_invites.link(ctx, site)
+
+@bot.tree.command(name = 'link')
+@app_commands.choices(site = [
+    app_commands.Choice(name = "Trello", value = "Trello"),
+    app_commands.Choice(name = "Github", value = "Github")])
+async def slash_link(interaction : discord.Interaction, site : app_commands.Choice[str]):
+    await unkai_invites.slash_link(interaction, site.value)
+
+@bot.tree.command(name = 'invite')
+@app_commands.choices(serveur = [
+    app_commands.Choice(name = "Yōsai", value = "yōsai"),
+    app_commands.Choice(name = "Unkai", value = "unkai"),
+    app_commands.Choice(name = "Nysux", value = "nysux")])
+async def slash_invitations(interaction : discord.Interaction, serveur : app_commands.Choice[str]): 
+    await unkai_invites.slash_link(interaction, serveur.value)
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
