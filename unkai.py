@@ -26,6 +26,7 @@ import UNKAI_commands.unkai_help as unkai_help
 import UNKAI_commands.unkai_invites as unkai_invites
 import UNKAI_commands.unkai_clear as unkai_clear
 import UNKAI_commands.unkai_rolls as unkai_rolls
+import UNKAI_commands.unkai_jokes as unkai_jokes
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -161,6 +162,17 @@ async def makai_roll(ctx : commands.Context, bonus : int, nombre : int = 1):
                                 app_commands.Choice(name = "3", value = 3)])
 async def slashmakai_roll(interaction : discord.Interaction, bonus : int, nombre : app_commands.Choice[int]):
     await unkai_rolls.slash_makai_roll(interaction, bonus, nombre)
+
+
+# JOKES - blagues (fonctionnel)
+    
+@bot.command(name = 'joke')
+async def blague(ctx : commands.Context):
+    await unkai_jokes.joke(ctx)
+
+@bot.tree.command(name = 'joke')
+async def slash_blague(interaction : discord.Interaction): 
+    await unkai_jokes.slash_joke(interaction)
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
