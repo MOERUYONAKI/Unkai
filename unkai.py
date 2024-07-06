@@ -25,6 +25,7 @@ from time import sleep
 import UNKAI_commands.unkai_help as unkai_help
 import UNKAI_commands.unkai_invites as unkai_invites
 import UNKAI_commands.unkai_clear as unkai_clear
+import UNKAI_commands.unkai_rolls as unkai_rolls
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -135,6 +136,31 @@ async def clear(ctx : commands.Context, nombre : int = 1):
 @app_commands.checks.has_permissions(manage_messages = True)
 async def slash_clear(interaction : discord.Interaction, nombre : int = 1) : 
     await unkai_clear.slash_clear(interaction, nombre) 
+
+
+# ROLLS - tirages aléatoires (fonctionnel)
+
+@bot.command(name = 'roll')
+async def dés_roll(ctx : commands.Context, faces : int = 6, nombre : int = 1):
+    await unkai_rolls.roll(ctx, faces, nombre)
+
+@bot.tree.command(name = 'roll')
+async def slash_dés_roll(interaction : discord.Interaction, faces : int = 6, nombre : int = 1):
+    await unkai_rolls.slash_roll(interaction, faces, nombre)
+
+@bot.command(name = 'makai_roll')
+async def makai_roll(ctx : commands.Context, bonus : int, nombre : int = 1):
+    nombre = 1 if nombre < 1 else nombre
+    nombre = 3 if nombre > 3 else nombre
+
+    await unkai_rolls.makai_roll(ctx, bonus, nombre)
+
+@bot.tree.command(name = 'makai_roll')
+@app_commands.choices(nombre = [app_commands.Choice(name = "1", value = 1),
+                                app_commands.Choice(name = "2", value = 2),
+                                app_commands.Choice(name = "3", value = 3)])
+async def slashmakai_roll(interaction : discord.Interaction, bonus : int, nombre : app_commands.Choice[int]):
+    await unkai_rolls.slash_makai_roll(interaction, bonus, nombre)
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
