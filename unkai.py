@@ -28,6 +28,8 @@ import UNKAI_commands.unkai_clear as unkai_clear
 import UNKAI_commands.unkai_rolls as unkai_rolls
 import UNKAI_commands.unkai_jokes as unkai_jokes
 import UNKAI_commands.unkai_meteo as unkai_meteo
+import UNKAI_commands.unkai_mod as unkai_mod
+import UNKAI_commands.unkai_lock as unkai_lock
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -44,11 +46,29 @@ embed.add_field(name = "field", value = "value", inline = False)
 
 bot.remove_command('help')
 
+serveurs = []
+
 
 # - - - - - - - - - - - - - - - -  C L A S S E S  - - - - - - - - - - - - - - - - #
 
 
+class Serveur():
+    ''' Statut du serveur '''
+    
+    def __init__(self, id : str):
+        self.status = 'unlock'
+        self.id = id
 
+    def check_status(self): # True si unlock, False sinon
+        return True if self.status == 'unlock' else False
+
+    def status_lock(self):
+        self.status = 'lock'
+        return 'Serveur verrouillé'
+
+    def status_unlock(self):
+        self.status = 'unlock'
+        return 'Serveur déverrouillé'
 
 
 # - - - - - - - - - - - - - - - -  C O M M A N D E S  - - - - - - - - - - - - - - - - #
@@ -216,6 +236,71 @@ async def slash_meteo(interaction : discord.Interaction, nom : str, climat : int
     await unkai_meteo.slash_meteo(interaction, nom, climat, saison, durée, dernière_température)
 
 
+# MODERATION - kick/ban (fonctionnel)
+
+@bot.command(name = 'kick')
+@has_permissions(kick_members = True)
+async def kick(ctx : commands.Context, member : discord.Member, * , reason = 'aucune raison spécifiée') : 
+    await unkai_mod.kick(ctx, member, reason, 1)
+
+@bot.command(name = 'ban')
+@has_permissions(ban_members = True)
+async def ban(ctx : commands.Context, member : discord.Member, * , reason = 'aucune raison spécifiée') : 
+    await unkai_mod.kick(ctx, member, reason, 2)
+
+@bot.tree.command(name = 'kick')
+@app_commands.checks.has_permissions(kick_members = True)
+async def slash_kick(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') : 
+    await unkai_mod.slash_kick(interaction, membre, raison, 1)
+
+@bot.tree.command(name = 'ban')
+@app_commands.checks.has_permissions(ban_members = True)
+async def slash_ban(interaction : discord.Interaction, membre : discord.Member, raison : str = 'aucune raison spécifiée') :
+    await unkai_mod.slash_kick(interaction, membre, raison, 2)
+
+@bot.command(name = 'kick_role')
+@has_permissions(administrator = True)
+async def kick_role(ctx, role : discord.Role, * , reason = 'aucune raison spécifiée') :
+    namekick = f'Les membres possédant le rôle "{role}" ont été expulsés du serveur'
+    reasonkick = f'**Raison :** {reason}'
+
+    for membre in ctx.guild.members:
+        if role in membre.roles:
+
+            try:
+                await membre.send(embed=discord.Embed(title = 'Vous avez été expulsé du serveur', description = reasonkick, color = 0x00ffff))
+            
+            except:
+                pass
+
+            await ctx.guild.kick(membre, reason = reason)
+
+    await ctx.send(embed=discord.Embed(title = namekick, description = reasonkick, color = 0x00ffff))
+
+
+# ANTI-RAID - activation/désactivation anti-raid (fonctionnel)
+    
+@bot.command(name = 'lock')
+@has_permissions(administrator = True)
+async def lock(ctx : commands.Context) : 
+    await unkai_lock.lock(ctx, serveurs)
+
+@bot.command(name = 'unlock')
+@has_permissions(administrator = True)
+async def unlock(ctx : commands.Context) : 
+    await unkai_lock.unlock(ctx, serveurs)
+
+@bot.tree.command(name = 'lock')
+@app_commands.checks.has_permissions(administrator = True)
+async def lock(interaction) : 
+    await unkai_lock.slash_lock(interaction, serveurs)
+
+@bot.tree.command(name = 'unlock')
+@app_commands.checks.has_permissions(administrator = True)
+async def unlock(interaction) : 
+    await unkai_lock.slash_unlock(interaction, serveurs)
+
+
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
 
 
@@ -225,7 +310,10 @@ async def on_ready():
     activity = discord.Game(name = "/help")
     await bot.change_presence(status = discord.Status.idle, activity = activity)
 
-    print(f'Initialisation terminée ! \n{round(bot.latency * 1000)} ms')
+    for guild in bot.guilds: # Initialisation de l'anti-raid
+        serveurs.append(Serveur(guild.id))
+
+    print(f'Initialisation terminée ! \n{round(bot.latency * 1000)} ms - {len(serveurs)} serveurs')
 
 @bot.event
 async def on_message(message): # réaction aux messages (fonctionnel)
@@ -269,12 +357,25 @@ async def on_message_edit(before, after): # réaction aux messages (fonctionnel)
 @bot.event     
 async def on_member_join(member : discord.Member): # bienvenue (fonctionnel)
     print(f'{member} a rejoint un de nos serveurs ({member.guild})')
+    lock = False
 
-    try: # Message de bienvenue - mp
-        await member.send("Bienvenue sur notre serveur !") 
+    for serveur in serveurs: # Anti-raid (fonctionnel)
+        if member.guild.id == serveur.id and serveur.status == 'lock':
+            try: 
+                await member.send(f'Le serveur est actuellement verrouillé') 
+            
+            except: 
+                pass
+            
+            await member.guild.kick(user = member, reason = 'Le serveur est actuellement verrouillé')
+            lock = True
 
-    except: 
-        pass
+    if not lock:
+        try: # Message de bienvenue - mp
+            await member.send("Bienvenue sur notre serveur !") 
+
+        except: 
+            pass
 
 @bot.event
 async def on_member_remove(member): # adieu (fonctionnel)
