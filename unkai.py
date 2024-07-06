@@ -24,6 +24,7 @@ from time import sleep
 
 import UNKAI_commands.unkai_help as unkai_help
 import UNKAI_commands.unkai_invites as unkai_invites
+import UNKAI_commands.unkai_clear as unkai_clear
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -122,6 +123,18 @@ async def slash_link(interaction : discord.Interaction, site : app_commands.Choi
     app_commands.Choice(name = "Nysux", value = "nysux")])
 async def slash_invitations(interaction : discord.Interaction, serveur : app_commands.Choice[str]): 
     await unkai_invites.slash_link(interaction, serveur.value)
+
+
+# CLEAR - suppression de messages (fonctionnel)
+
+@bot.command(name = 'clear') 
+async def clear(ctx : commands.Context, nombre : int = 1):
+    await unkai_clear.clear(ctx, nombre)
+
+@bot.tree.command(name = 'clear')
+@app_commands.checks.has_permissions(manage_messages = True)
+async def slash_clear(interaction : discord.Interaction, nombre : int = 1) : 
+    await unkai_clear.slash_clear(interaction, nombre) 
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
