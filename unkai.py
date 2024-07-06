@@ -20,6 +20,10 @@ from discord import app_commands
 from nacl import *
 from time import sleep
 
+# - UNKAI commands
+
+import UNKAI_commands.unkai_help as unkai_help
+
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
 
@@ -37,6 +41,12 @@ bot.remove_command('help')
 
 
 # - - - - - - - - - - - - - - - -  C L A S S E S  - - - - - - - - - - - - - - - - #
+
+
+
+
+
+# - - - - - - - - - - - - - - - -  C O M M A N D E S  - - - - - - - - - - - - - - - - #
 
 
 # PING - mesure du ping (fonctionnel)
@@ -57,10 +67,26 @@ async def slash_ms(interaction : discord.Interaction):
     await interaction.response.send_message(f'> *{round(bot.latency * 1000)} ms*')
 
 
-# - - - - - - - - - - - - - - - -  C O M M A N D E S  - - - - - - - - - - - - - - - - #
+# HELP - aides : liste des commandes (fonctionnel)
 
+@bot.command(name = 'help')
+async def help(ctx : commands.Context, catégorie : str = 'all'):
+    if catégorie.lower() == 'meteo':
+        await unkai_help.help(ctx, 'meteo')
 
+    elif catégorie.lower() == 'webhooks':
+        await unkai_help.help(ctx, 'webhooks')
 
+    else:
+        await unkai_help.help(ctx)
+
+@bot.tree.command(name = 'help')
+@app_commands.choices(catégorie = [
+    app_commands.Choice(name = 'Tout', value = 'all'),
+    app_commands.Choice(name = "Météo", value = "meteo"),
+    app_commands.Choice(name = "Webhooks", value = "webhooks")])
+async def slash_help(interaction : discord.Interaction, catégorie : app_commands.Choice[str] = None): 
+    await unkai_help.slash_help(interaction, catégorie.value if catégorie != None else 'all')
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
