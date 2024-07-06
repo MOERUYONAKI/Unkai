@@ -1,0 +1,10 @@
+{
+    "TOKEN": "Votre token",
+    "PREFIX" : "!",
+
+    "GUILD_ID" : "ID de votre serveur",
+    "CHANNEL_ID" : "ID du salon de vérificationr",
+
+    "ROLE_ID1" : "ID du rôle de membre non vérifié",
+    "ROLE_ID2" : "ID du rôle de membre vérifié"
+}

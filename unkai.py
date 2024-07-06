@@ -19,6 +19,7 @@ from discord.voice_client import VoiceClient
 from discord import app_commands
 from nacl import *
 from time import sleep
+import json
 
 # - UNKAI commands
 
@@ -36,11 +37,14 @@ import UNKAI_commands.unkai_webhooks as unkai_webhooks
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
 
 
+with open("conf.json", "r") as conf:
+    data = json.load(conf)
+
 intents = discord.Intents.all()
 intents.members = True
 intents.guilds = True
 
-bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents = intents)
+bot = commands.Bot(command_prefix = data['PREFIX'], description = 'narrateur rp', intents = intents)
 
 embed = discord.Embed(title = "title", description = "description", color = 0x00ffff)
 embed.add_field(name = "field", value = "value", inline = False)
@@ -79,8 +83,8 @@ class button_view(discord.ui.View):
         
     @discord.ui.button(label = "Check", style = discord.ButtonStyle.green, custom_id = "verify")
     async def check(self, interaction : discord.Interaction, button : discord.ui.Button):
-        role_verify = interaction.guild.get_role(1198947527710478366)
-        role_non_verify = interaction.guild.get_role(1198947456302456892)
+        role_verify = interaction.guild.get_role(data['ROLE_ID1'])
+        role_non_verify = interaction.guild.get_role(data['ROLE_ID2'])
             
         if role_verify not in interaction.user.roles and role_non_verify in interaction.user.roles:
             await interaction.user.remove_roles(role_non_verify)
@@ -92,8 +96,8 @@ class button_view(discord.ui.View):
             
     @discord.ui.button(label = "Leave", style = discord.ButtonStyle.danger, custom_id = "leave")
     async def leave(self, interaction : discord.Interaction, button : discord.ui.Button):
-        role_verify = interaction.guild.get_role(1198947527710478366)
-        role_non_verify = interaction.guild.get_role(1198947456302456892)
+        role_verify = interaction.guild.get_role(data['ROLE_ID1'])
+        role_non_verify = interaction.guild.get_role(data['ROLE_ID2'])
         
         if role_verify not in interaction.user.roles and role_non_verify in interaction.user.roles:
             await interaction.user.kick()
@@ -484,10 +488,10 @@ async def on_member_join(member : discord.Member): # bienvenue (fonctionnel)
         except: 
             pass
     
-        if member.guild.id == 1155450091398758460: # Vérification d'entrée (en test sur SDM)
+        if member.guild.id == data['GUILD_ID']: # Vérification d'entrée (en test sur SDM)
             role = discord.utils.get(member.guild.roles, name = "Unchecked")
             await member.add_roles(role)
-            loc = bot.get_channel(1198949752725831700)
+            loc = bot.get_channel(data['CHANNEL_ID'])
             await loc.send(f"> {member.mention} - Suppression dans 60 secondes", delete_after = 60, embed = discord.Embed(title = "Check d'entrée", description = "Pour valider votre entrée sur le serveur, veuillez intéragir avec le bouton **Check**. Celui-ci vous donnera le rôle <@&1198947527710478366> et par la même occasion l'accès au serveur.", color = 0xFF3333), view = button_view())
 
 @bot.event
@@ -498,7 +502,7 @@ async def on_member_remove(member): # adieu (fonctionnel)
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
 
 
-bot.run("TOKEN")
+bot.run(data['TOKEN'])
 
 
 # - - - - - - - - - - - - - - - -  I N F O R M A T I O N S  - - - - - - - - - - - - - - - - #
