@@ -27,6 +27,7 @@ import UNKAI_commands.unkai_invites as unkai_invites
 import UNKAI_commands.unkai_clear as unkai_clear
 import UNKAI_commands.unkai_rolls as unkai_rolls
 import UNKAI_commands.unkai_jokes as unkai_jokes
+import UNKAI_commands.unkai_meteo as unkai_meteo
 
 
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
@@ -200,6 +201,19 @@ async def embed_narration(ctx : commands.Context, titre,  * , nar):
 
     await ctx.message.delete()    
     await ctx.send(embed = discord.Embed(title = titre, description = nar, color=0x00ffff))
+
+
+# METEO RP - last update = v2
+
+@bot.command(name = 'meteo')
+@has_permissions(administrator = True)
+async def meteo(ctx : commands.Context, nom : str, climat : int, saison : int, durée : int, last_temp : float = None) : # météo avec températures (fonctionnel)
+    await unkai_meteo.meteo(ctx, nom, climat, saison, durée, last_temp)
+
+@bot.tree.command(name = 'meteo')
+@app_commands.checks.has_permissions(administrator = True)
+async def slash_meteo(interaction : discord.Interaction, nom : str, climat : int, saison : int, durée : int, dernière_température : float = None) : # météo avec températures (fonctionnel)
+    await unkai_meteo.slash_meteo(interaction, nom, climat, saison, durée, dernière_température)
 
 
 # - - - - - - - - - - - - - - - -  E V E N T S  - - - - - - - - - - - - - - - - #
