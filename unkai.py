@@ -19,6 +19,7 @@ from discord.voice_client import VoiceClient
 from discord import app_commands
 from nacl import *
 from time import sleep
+import json
 
 # - UNKAI commands
 
@@ -36,11 +37,14 @@ import UNKAI_commands.unkai_webhooks as unkai_webhooks
 # - - - - - - - - - - - - - - - -  A U T R E S  - - - - - - - - - - - - - - - - #
 
 
+with open("conf.json", "r") as conf:
+    data = json.load(conf)
+
 intents = discord.Intents.all()
 intents.members = True
 intents.guilds = True
 
-bot = commands.Bot(command_prefix = 'U!', description = 'narrateur rp', intents = intents)
+bot = commands.Bot(command_prefix = data['PREFIX'], description = 'narrateur rp', intents = intents)
 
 embed = discord.Embed(title = "title", description = "description", color = 0x00ffff)
 embed.add_field(name = "field", value = "value", inline = False)
@@ -72,6 +76,34 @@ class Serveur():
     def status_unlock(self):
         self.status = 'unlock'
         return 'Serveur déverrouillé'
+
+class button_view(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout = None)
+        
+    @discord.ui.button(label = "Check", style = discord.ButtonStyle.green, custom_id = "verify")
+    async def check(self, interaction : discord.Interaction, button : discord.ui.Button):
+        role_verify = interaction.guild.get_role(data['ROLE_ID1'])
+        role_non_verify = interaction.guild.get_role(data['ROLE_ID2'])
+            
+        if role_verify not in interaction.user.roles and role_non_verify in interaction.user.roles:
+            await interaction.user.remove_roles(role_non_verify)
+            await interaction.user.add_roles(role_verify)
+            await interaction.response.send_message(embed = discord.Embed(title = "Check d'entrée", description = "Votre entrée a été confirmée, bienvenue sur le serveur ! 👋", color = 0x74FF33), ephemeral = True)
+            
+        else:
+            await interaction.response.send_message("Ce check ne vous concerne pas...", ephemeral = True)
+            
+    @discord.ui.button(label = "Leave", style = discord.ButtonStyle.danger, custom_id = "leave")
+    async def leave(self, interaction : discord.Interaction, button : discord.ui.Button):
+        role_verify = interaction.guild.get_role(data['ROLE_ID1'])
+        role_non_verify = interaction.guild.get_role(data['ROLE_ID2'])
+        
+        if role_verify not in interaction.user.roles and role_non_verify in interaction.user.roles:
+            await interaction.user.kick()
+            
+        else:
+            await interaction.response.send_message("Ce check ne vous concerne pas...", ephemeral = True)
 
 
 # - - - - - - - - - - - - - - - -  C O M M A N D E S  - - - - - - - - - - - - - - - - #
@@ -433,11 +465,6 @@ async def on_message_edit(before, after): # réaction aux messages (fonctionnel)
     elif Before in list_words and After not in list_words:
         await after.remove_reaction(member = id('864220103113834516'), emoji = "👋")
 
-    elif After == 'quoi':
-        msg = await after.reply("feur")
-        sleep(1.5)
-        await msg.delete()
-
 @bot.event     
 async def on_member_join(member : discord.Member): # bienvenue (fonctionnel)
     print(f'{member} a rejoint un de nos serveurs ({member.guild})')
@@ -460,6 +487,12 @@ async def on_member_join(member : discord.Member): # bienvenue (fonctionnel)
 
         except: 
             pass
+    
+        if member.guild.id == data['GUILD_ID']: # Vérification d'entrée (en test sur SDM)
+            role = discord.utils.get(member.guild.roles, name = "Unchecked")
+            await member.add_roles(role)
+            loc = bot.get_channel(data['CHANNEL_ID'])
+            await loc.send(f"> {member.mention} - Suppression dans 60 secondes", delete_after = 60, embed = discord.Embed(title = "Check d'entrée", description = "Pour valider votre entrée sur le serveur, veuillez intéragir avec le bouton **Check**. Celui-ci vous donnera le rôle <@&1198947527710478366> et par la même occasion l'accès au serveur.", color = 0xFF3333), view = button_view())
 
 @bot.event
 async def on_member_remove(member): # adieu (fonctionnel)
@@ -469,7 +502,7 @@ async def on_member_remove(member): # adieu (fonctionnel)
 # - - - - - - - - - - - - - - - -  T O K E N  - - - - - - - - - - - - - - - - #
 
 
-bot.run("TOKEN")
+bot.run(data['TOKEN'])
 
 
 # - - - - - - - - - - - - - - - -  I N F O R M A T I O N S  - - - - - - - - - - - - - - - - #

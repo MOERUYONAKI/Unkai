@@ -1,9 +1,7 @@
 # Unkai
+
 [ Project Unkai V2 ]
 
-<<<<<<< Updated upstream
-Unkai sera bientôt de retour...
-=======
 ## Présentation
 
 **Unkai** est un bot Discord créé pour répondre à des besoins sur mesure. Il offre des fonctionnalités variées allant de la modération à l'amélioration de l'expérience de jeu de rôle (RP).
@@ -96,4 +94,3 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/MOE
 ## Support
 
 Pour obtenir de l'aide ou poser des questions, rejoignez notre serveur Discord via ce [lien](https://discord.gg/kZk2SUQFy7)
->>>>>>> Stashed changes
