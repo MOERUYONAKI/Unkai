@@ -62,7 +62,7 @@ Assurez-vous que votre fichier de configuration contient toutes les informations
 }
 ```
 
-Vous aurez aussi besoin de créer une [base de données](https://github.com/MOERUYONAKI/Unkai/tree/main/UNKAI_commands/Databases/UNKAI_wbk/Unkai_wbk_DB.md) pour utiliser les **Webhooks**
+Vous aurez aussi besoin de créer une [base de données](https://github.com/MOERUYONAKI/Unkai/blob/main/UNKAI_commands/DataBases/UNKAI_wbk/UNKAI_wbk_DB.md) pour utiliser les **Webhooks**
 
 ## Utilisation
 
