@@ -4,7 +4,10 @@
 
     "GUILD_ID" : "ID de votre serveur",
     "CHANNEL_ID" : "ID du salon de vérificationr",
-
     "ROLE_ID1" : "ID du rôle de membre non vérifié",
-    "ROLE_ID2" : "ID du rôle de membre vérifié"
+    "ROLE_ID2" : "ID du rôle de membre vérifié",
+
+    "DATABASE" : "ID du rôle de membre vérifié",
+    "USER" : "ID du rôle de membre vérifié",
+    "PASSWORD" : "ID du rôle de membre vérifié"
 }

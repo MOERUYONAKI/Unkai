@@ -4,7 +4,7 @@
 
 ## Création
 
-**Unkai** a été créé en juillet 2021 par **[MOERUYONAKI](https://github.com/MOERUYONAKI)** avec comme objectif la création d'un outil polyvalent et sur mesure pour le RP discord. Les premières commandes, comme **U!nar**, étaient purement utilitaire, et donc très simples.  
+**Unkai** a été créé le 12 juillet 2021 par **[MOERUYONAKI](https://github.com/MOERUYONAKI)** avec comme objectif la création d'un outil polyvalent et sur mesure pour le RP discord. Les premières commandes, comme **U!nar**, étaient purement utilitaire, et donc très simples.  
 
 À l'origine, les commandes étaient toutes basiques et créées à mesure de l'apparition des besoins, ainsi que de l'évolution des capacités du créateur. Aujourd'hui encore, la commande **U!invite** (disponible en commande slash) permet d'obtenir un lien vers les serveurs berceaux du projet.  
 

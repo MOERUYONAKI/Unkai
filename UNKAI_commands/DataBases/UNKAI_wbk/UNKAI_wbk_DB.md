@@ -1,5 +1,7 @@
 # - UNKAI WEBHOOKS -
 
+L'utilisation des **Webhooks** nécessite d'avoir une base MariaDB dans localhost (en important le fichier "**UNKAI_wbk_DB.sql**")...
+
 ## USERS -
 
 **ID** - *integer*  

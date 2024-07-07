@@ -58,8 +58,11 @@ Assurez-vous que votre fichier de configuration contient toutes les informations
 {
   "TOKEN": "Votre token",
   "PREFIX" : "Au choix, '!' par défaut"
+  ...
 }
 ```
+
+Vous aurez aussi besoin de créer une [base de données](https://github.com/MOERUYONAKI/Unkai/tree/main/UNKAI_commands/Databases/UNKAI_wbk/Unkai_wbk_DB.md) pour utiliser les **Webhooks**
 
 ## Utilisation
 
@@ -73,7 +76,7 @@ Une fois le bot lancé, vous pouvez utiliser la commande `/help` pour obtenir la
 
 ## Licence
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/MOERUYONAKI/Unkai/blob/main/LICENSE) pour plus de détails
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/MOERUYONAKI/Unkai/blob/main/LICENSE) pour plus de détails...
 
 ## Auteurs et remerciements
 

@@ -1,9 +1,13 @@
 import mariadb
 import datetime
+import json
+
+with open("conf.json", "r") as conf:
+    data = json.load(conf)
 
 class Webhooks():
     def __init__(self):
-        self.database = 'unkai_wbk'
+        self.database = data['DATABASE']
 
 
     # - USERS
@@ -11,7 +15,7 @@ class Webhooks():
     def user_is_register(self, userid : int): # Vérifie si un utilisateur est enregistré par son ID discord
         Uid = f'Uid{userid}'
 
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+        database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
         crs = database.cursor()
 
         crs.execute(f'SELECT ID FROM users WHERE discord_id = "{Uid}";')
@@ -26,7 +30,7 @@ class Webhooks():
         else:
             Uid = f'Uid{userid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'INSERT INTO users (`username`, `discord_id`) VALUES ("{username}", "{Uid}");')
@@ -41,7 +45,7 @@ class Webhooks():
         else:
             Uid = f'Uid{userid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT ID FROM users WHERE discord_id = "{Uid}";')
@@ -56,7 +60,7 @@ class Webhooks():
     def guild_is_register(self, guildid : int): # Vérifie si un serveur est enregistré par son ID discord
         Gid = f'Gid{guildid}'
 
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+        database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
         crs = database.cursor()
 
         crs.execute(f'SELECT ID FROM guilds WHERE discord_id = "{Gid}";')
@@ -71,7 +75,7 @@ class Webhooks():
         else:
             Gid = f'Gid{guildid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'INSERT INTO guilds (`name`, `discord_id`) VALUES ("{guildname}", "{Gid}");')
@@ -89,7 +93,7 @@ class Webhooks():
         else:
             Uid = f'Uid{owner_id}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT * FROM webhooks WHERE owner_ID = "{Uid}" and name = "{name}";')
@@ -98,7 +102,7 @@ class Webhooks():
             return True if len(crs.fetchall()) > 0 else False
     
     def webhook_is_register_by_id(self, WBKid): # Vérifie si un webhook est enregistré par son ID
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+        database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
         crs = database.cursor()
 
         crs.execute(f'SELECT ID FROM webhooks WHERE ID = "{WBKid}";')
@@ -116,7 +120,7 @@ class Webhooks():
         else:
             Uid = f'Uid{owner_id}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             if avatar_url != None:
@@ -134,7 +138,7 @@ class Webhooks():
             return False
 
         else:
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'DELETE FROM webhooks WHERE ID = "{id}";')
@@ -149,7 +153,7 @@ class Webhooks():
         else:
             Uid = f'Uid{owner_id}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'SELECT ID, name, tag, avatar, creation_date FROM webhooks WHERE owner_id = "{Uid}";')
@@ -168,7 +172,7 @@ class Webhooks():
         else:
             Uid = f'Uid{owner_id}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE webhooks SET `name` = "{newname}" WHERE name = "{name}" AND owner_ID = "{Uid}";')
@@ -183,7 +187,7 @@ class Webhooks():
         else:
             Uid = f'Uid{owner_id}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE webhooks SET `tag` = "{newtag}" WHERE name = "{name}" AND owner_ID = "{Uid}";')
@@ -198,7 +202,7 @@ class Webhooks():
         else:
             Uid = f'Uid{owner_id}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'UPDATE webhooks SET `avatar` = "{avatar_url}" WHERE name = "{name}" AND owner_ID = "{Uid}";')
@@ -212,7 +216,7 @@ class Webhooks():
     def is_register(self, WBKid, guildid): # Vérifie si un webhook est créé sur un serveur par leurs ID
         Gid = f'Gid{guildid}'
 
-        database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+        database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
         crs = database.cursor()
 
         crs.execute(f'SELECT ID FROM registrations WHERE Gid = "{Gid}" and Wid = "{WBKid}";')
@@ -230,7 +234,7 @@ class Webhooks():
 
             Gid = f'Gid{guildid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'INSERT INTO registrations(`date`, `Gid`, `Wid`) VALUES ("{datetime.date.today()}", "{Gid}", "{WBKid}");')
@@ -245,41 +249,10 @@ class Webhooks():
         else:
             Gid = f'Gid{guildid}'
 
-            database = mariadb.connect(host = "localhost", port = 3307, user = "Unkai", password = "MAKAI!host", database = self.database)
+            database = mariadb.connect(host = "localhost", port = 3307, user = data['USER'], password = data['PASSWORD'], database = self.database)
             crs = database.cursor()
 
             crs.execute(f'DELETE FROM registrations WHERE Gid = "{Gid}" AND Wid = "{WBKid}";')
             database.close()
 
             return True
-
-
-# - TESTS 
-
-test = Webhooks()
-
-# - Users
-#? user_is_register - validé
-#? add_user - validé
-#? get_id_by_Uid - validé
-
-# - Guilds
-#? guild_is_register - validé
-#? add_guild - validé
-
-# - Webhooks
-#? webhook_is_register - validé
-#? webhook_is_register_by_id - validé
-#? add_webhook - validé 
-#? remove_webhook - validé 
-#? get_webhooks_list - validé
-
-# Webhooks edits
-#? edit_webhook_name - validé
-#? edit_webhook_tag - validé
-#? edit_webhook_avatar - validé
-
-# - Registrations 
-#? is_register - validé
-#? set_registration - validé 
-#? unset_registration - validé 
