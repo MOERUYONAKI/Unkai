@@ -7,7 +7,7 @@
     "ROLE_ID1" : "ID du rôle de membre non vérifié",
     "ROLE_ID2" : "ID du rôle de membre vérifié",
 
-    "DATABASE" : "ID du rôle de membre vérifié",
-    "USER" : "ID du rôle de membre vérifié",
-    "PASSWORD" : "ID du rôle de membre vérifié"
+    "DATABASE" : "Nom de la base de donnée",
+    "USER" : "Nom d'utilisateur localhost",
+    "PASSWORD" : "Mot de passe de l'utilisateur"
 }
