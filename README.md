@@ -48,7 +48,7 @@ pip install -r requirements.txt
 Il est aussi possible de selectionner une certaine version grâce aux tags et au [guide des mises à jour](https://github.com/MOERUYONAKI/Unkai/tree/main/UNKAI_docs/updates.md)
 
 > [!WARNING]
-> Certaines version ne contiennent pas les requirements et le fichier de configuration et devront donc être éditée manuellement.
+> Certaines versions ne contiennent pas les requirements et le fichier de configuration et devront donc être éditée manuellement.
 
 ## Configuration
 
@@ -88,7 +88,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/MOE
 - **[Rusano](https://github.com/sleddge)**
 
 3. Autres remerciements
-- **Natsu** pour le soutien et aussi pas mal de tests
+- **[Natsu](https://github.com/NatsuHareta)** pour le soutien et aussi pas mal de tests
 - **[Chatgpt](https://chat.openai.com)** pour ce readme principalement
 
 ## Support
