@@ -89,7 +89,6 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/MOE
 
 3. Autres remerciements
 - **[Natsu](https://github.com/NatsuHareta)** pour le soutien et aussi pas mal de tests
-- **[Chatgpt](https://chat.openai.com)** pour ce readme principalement
 
 ## Support
 
